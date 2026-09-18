@@ -5,18 +5,18 @@
 */
 const SITE_CONFIG = {
   year: 2026,
-  business: {
-    name: "YOUR BUSINESS NAME",
-    email: "YOUR_OFFICIAL_EMAIL@example.com",
-    phoneDisplay: "+91 YOUR CONTACT NUMBER",
-    phoneLink: "+91YOURCONTACTNUMBER",
-    whatsapp: "91YOURWHATSAPPNUMBER",
-    instagram: "https://instagram.com/YOUR_HANDLE",
-    instagramDisplay: "@YOUR_HANDLE",
-    location: "YOUR CITY, STATE, INDIA",
-    tagline: "Professional Digital Solutions for Local Businesses",
-    heroMessage: "Professional websites, digital QR menus, online ordering and payment solutions designed for cafes, restaurants and small businesses."
-  },
+ business: {
+  name: "Ved Digital Services",
+  email: "veddigitalservices777@gmail.com",
+  phoneDisplay: "+91 9844379777",
+  phoneLink: "+919844379777",
+  whatsapp: "919844379777",
+  instagram: "https://instagram.com/ved_digitalservices",
+  instagramDisplay: "@ved_digitalservices",
+  location: "Belagavi, Karnataka, India",
+  tagline: "Professional Digital Solutions for Local Businesses",
+  heroMessage: "Professional websites, digital QR menus, online ordering and payment solutions designed for cafes, restaurants and small businesses."
+},
   theme: {
     accent: "#7c5cff",
     accent2: "#20d3a2",
