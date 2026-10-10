@@ -173,3 +173,187 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .
   .container{width:min(100% - 26px,1180px)}.menu-toggle{display:block}.nav-links{position:absolute;left:13px;right:13px;top:72px;display:none;flex-direction:column;align-items:stretch;background:#0d1220;border:1px solid var(--line);border-radius:16px;padding:12px}.nav-links.open{display:flex}.nav-links a{padding:11px 10px}.hero h1{font-size:clamp(2.7rem,14vw,4rem)}.mock-grid{grid-template-columns:1fr}.mock-side{grid-template-columns:repeat(3,1fr)}.mock-phone{min-height:390px}.mini-card{min-height:125px;padding:14px}.fake-qr{width:65px;height:65px;background-size:10px 10px}.service-grid,.pricing-grid,.maintenance-grid,.benefit-grid,.portfolio-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.cta-banner{flex-direction:column;align-items:flex-start}.form-row{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column}.contact-details a,.contact-details>div{flex-direction:column;gap:4px}.contact-details b{text-align:left}.trust-strip{gap:12px}.trust-strip span{width:100%;margin-right:0}
 }
 @media (max-width:480px){.steps{grid-template-columns:1fr}.hero{padding-top:52px}.mock-side{grid-template-columns:1fr}.mini-card{min-height:110px}.dashboard-window{padding:8px}.contact-buttons .btn{width:100%}}
+
+
+/* ================================================================
+   PREMIUM MOTION LAYER — Ved Digital Services
+   Lightweight CSS-first ambience; no external animation library.
+   ================================================================ */
+:root {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --motion-ease: cubic-bezier(.2,.75,.25,1);
+}
+html { scroll-padding-top: 92px; }
+body {
+  isolation: isolate;
+  background: var(--bg);
+  overflow-x: clip;
+}
+.ambient-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 14% 12%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 38%),
+    radial-gradient(ellipse at 88% 44%, rgba(32, 211, 162, .07), transparent 34%),
+    linear-gradient(130deg, rgba(9, 13, 29, .3), rgba(11, 16, 32, .18));
+}
+.announcement, .site-header, main, .footer { position: relative; z-index: 1; }
+.site-header { z-index: 20; }
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 80;
+  pointer-events: none;
+  background: rgba(255,255,255,.035);
+}
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #64a7ff 55%, var(--accent-2));
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 75%, transparent);
+  will-change: width;
+}
+.ambient-grid {
+  position: absolute;
+  inset: -25%;
+  opacity: .19;
+  background-image:
+    linear-gradient(rgba(155, 166, 255, .075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 166, 255, .075) 1px, transparent 1px);
+  background-size: 66px 66px;
+  mask-image: radial-gradient(ellipse at 50% 35%, #000 0%, transparent 70%);
+  transform: perspective(900px) rotateX(57deg) scale(1.45) translateY(-6%);
+  transform-origin: center top;
+  animation: gridDrift 34s linear infinite;
+}
+.ambient-orb {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: .42;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+}
+.orb-one {
+  width: min(42vw, 560px); aspect-ratio: 1;
+  top: 7%; left: -15%;
+  background: radial-gradient(circle at 36% 35%, rgba(124,92,255,.22), rgba(70,91,232,.08) 35%, transparent 70%);
+  animation: orbFloatOne 26s ease-in-out infinite alternate;
+}
+.orb-two {
+  width: min(40vw, 520px); aspect-ratio: 1;
+  top: 31%; right: -15%;
+  background: radial-gradient(circle at 44% 44%, rgba(32,211,162,.13), rgba(76,99,230,.08) 42%, transparent 72%);
+  animation: orbFloatTwo 30s ease-in-out infinite alternate;
+}
+.orb-three {
+  width: min(30vw, 380px); aspect-ratio: 1;
+  bottom: -6%; left: 38%;
+  background: radial-gradient(circle, rgba(88,126,255,.13), rgba(124,92,255,.045) 45%, transparent 72%);
+  animation: orbFloatThree 22s ease-in-out infinite alternate;
+}
+.ambient-streak {
+  position: absolute;
+  width: min(55vw, 760px);
+  height: 1px;
+  opacity: .2;
+  background: linear-gradient(90deg, transparent, rgba(182,190,255,.55), rgba(32,211,162,.38), transparent);
+  transform: rotate(-24deg);
+  filter: blur(.4px);
+}
+.streak-one { top: 25%; left: 35%; animation: streakTravel 19s ease-in-out infinite alternate; }
+.streak-two { top: 67%; left: -12%; opacity: .12; animation: streakTravel 25s ease-in-out infinite alternate-reverse; }
+
+/* Surface depth and soft cursor-following light on the business cards. */
+.service-card, .price-card, .maintenance-card, .benefit-card, .step, .portfolio-card, .about-panel, .contact-form {
+  position: relative;
+  isolation: isolate;
+  transition: transform .32s var(--motion-ease), border-color .32s ease, box-shadow .32s ease, background-color .32s ease;
+  transform-style: preserve-3d;
+}
+.service-card::before, .price-card::before, .maintenance-card::before, .benefit-card::before,
+.step::before, .portfolio-card::before, .about-panel::before, .contact-form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(440px circle at var(--pointer-x) var(--pointer-y), rgba(139,126,255,.14), transparent 48%);
+  transition: opacity .3s ease;
+}
+.service-card:hover, .price-card:hover, .maintenance-card:hover, .benefit-card:hover,
+.step:hover, .portfolio-card:hover, .about-panel:hover, .contact-form:hover {
+  transform: translateY(-5px) perspective(1000px) rotateX(.35deg);
+  border-color: rgba(166,151,255,.33);
+  box-shadow: 0 24px 64px rgba(0,0,0,.23), 0 0 0 1px rgba(139,126,255,.04), 0 0 34px rgba(124,92,255,.07);
+}
+.service-card:hover::before, .price-card:hover::before, .maintenance-card:hover::before, .benefit-card:hover::before,
+.step:hover::before, .portfolio-card:hover::before, .about-panel:hover::before, .contact-form:hover::before { opacity: 1; }
+.service-card > *, .price-card > *, .maintenance-card > *, .benefit-card > *, .step > *, .portfolio-card > *, .about-panel > *, .contact-form > * { transform: translateZ(12px); }
+.service-icon { transition: transform .35s var(--motion-ease), background-color .35s ease, box-shadow .35s ease; }
+.service-card:hover .service-icon, .price-card:hover .service-icon {
+  transform: translateY(-2px) rotate(-5deg) scale(1.06);
+  background: rgba(124,92,255,.23);
+  box-shadow: 0 8px 25px rgba(124,92,255,.13);
+}
+.btn { position: relative; isolation: isolate; transition: transform .28s var(--motion-ease), box-shadow .28s ease, border-color .28s ease, background-position .5s ease; }
+.btn-primary { background-size: 180% 180%; animation: buttonAura 7s ease-in-out infinite; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 46px rgba(124,92,255,.36); }
+.btn-secondary:hover, .btn-ghost:hover { border-color: rgba(180,169,255,.4); background: rgba(124,92,255,.085); }
+.nav-cta { transition: transform .25s ease, box-shadow .25s ease; }
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(255,255,255,.1); }
+.hero-visual { perspective: 1300px; animation: heroFloat 8s ease-in-out infinite; }
+.glow { animation: glowBreath 7s ease-in-out infinite alternate; }
+.dashboard-window {
+  transform: perspective(1300px) rotateX(var(--hero-tilt-y, 0deg)) rotateY(var(--hero-tilt-x, 0deg));
+  transition: transform .28s ease-out, box-shadow .4s ease;
+  box-shadow: 0 30px 90px rgba(0,0,0,.35), 0 0 60px rgba(124,92,255,.07);
+}
+.hero-visual:hover .dashboard-window { box-shadow: 0 36px 100px rgba(0,0,0,.4), 0 0 70px rgba(124,92,255,.13); }
+.mini-card { transition: transform .35s var(--motion-ease), border-color .35s ease; }
+.mini-card:nth-child(1) { animation: miniFloat 7s ease-in-out infinite; }
+.mini-card:nth-child(2) { animation: miniFloat 8s ease-in-out infinite -2.5s; }
+.mini-card:nth-child(3) { animation: miniFloat 9s ease-in-out infinite -4s; }
+.mock-order { cursor: default; box-shadow: 0 8px 26px rgba(255,255,255,.07); }
+.fake-qr { box-shadow: 0 0 26px rgba(124,92,255,.12); }
+.trust-strip strong { transition: color .25s ease, transform .25s ease; }
+.trust-strip strong:hover { color: #fff; transform: translateY(-2px); }
+.section-head h2 { text-wrap: balance; }
+
+@keyframes gridDrift { 0% { transform: perspective(900px) rotateX(57deg) scale(1.45) translate3d(0,-6%,0); } 100% { transform: perspective(900px) rotateX(57deg) scale(1.45) translate3d(0,2%,0); } }
+@keyframes orbFloatOne { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(8vw,5vh,0) scale(1.08); } }
+@keyframes orbFloatTwo { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(-7vw,-5vh,0) scale(1.12); } }
+@keyframes orbFloatThree { 0% { transform: translate3d(0,0,0) scale(.95); } 100% { transform: translate3d(4vw,-6vh,0) scale(1.08); } }
+@keyframes streakTravel { 0% { transform: translate3d(-2vw,0,0) rotate(-24deg); opacity: .08; } 100% { transform: translate3d(5vw,2vh,0) rotate(-18deg); opacity: .22; } }
+@keyframes heroFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@keyframes glowBreath { 0% { opacity: .6; transform: scale(.96); } 100% { opacity: 1; transform: scale(1.04); } }
+@keyframes miniFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+@keyframes buttonAura { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+@media (max-width: 760px) {
+  .ambient-grid { opacity: .09; background-size: 52px 52px; }
+  .ambient-orb { opacity: .26; filter: blur(12px); }
+  .ambient-streak { display: none; }
+  .hero-visual { animation-duration: 10s; }
+  .service-card, .price-card, .maintenance-card, .benefit-card, .step, .portfolio-card, .about-panel, .contact-form { transform-style: flat; }
+  .service-card > *, .price-card > *, .maintenance-card > *, .benefit-card > *, .step > *, .portfolio-card > *, .about-panel > *, .contact-form > * { transform: none; }
+  .service-card:hover, .price-card:hover, .maintenance-card:hover, .benefit-card:hover, .step:hover, .portfolio-card:hover, .about-panel:hover, .contact-form:hover { transform: translateY(-2px); }
+}
+@media (pointer: coarse) {
+  .service-card:hover, .price-card:hover, .maintenance-card:hover, .benefit-card:hover, .step:hover, .portfolio-card:hover, .about-panel:hover, .contact-form:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .ambient-grid, .ambient-orb, .ambient-streak, .hero-visual, .mini-card, .glow, .btn-primary { animation: none !important; }
+  .dashboard-window { transform: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}

@@ -111,8 +111,68 @@
       if(service){ $('#serviceSelect').value=service; }
     });
     $('#contactForm').addEventListener('submit', handleSubmit);
-    const io = new IntersectionObserver(entries=>entries.forEach(en=>en.isIntersecting && en.target.classList.add('in')),{threshold:.08});
-    $$('.reveal').forEach(el=>io.observe(el));
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealItems = $$('.reveal');
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      const io = new IntersectionObserver(entries=>entries.forEach(en=>{
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      }), {threshold:.08, rootMargin:'0px 0px -28px 0px'});
+      revealItems.forEach((el, i)=>{
+        if (el.classList.contains('service-card') || el.classList.contains('price-card') || el.classList.contains('maintenance-card')) {
+          el.style.transitionDelay = `${(i % 3) * 65}ms`;
+        }
+        io.observe(el);
+      });
+    } else {
+      revealItems.forEach(el=>el.classList.add('in'));
+    }
+
+    // Slim progress indicator gives long pages a polished, responsive feel.
+    const progress = $('#scrollProgress');
+    let scrollTicking = false;
+    const updateProgress = () => {
+      if (!progress) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progress.style.width = `${ratio * 100}%`;
+      scrollTicking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) { window.requestAnimationFrame(updateProgress); scrollTicking = true; }
+    }, {passive:true});
+    updateProgress();
+
+    // Cursor-following card light + gentle 3D perspective, desktop only.
+    const finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (finePointer && !reduceMotion) {
+      const interactiveCards = $$('.service-card, .price-card, .maintenance-card, .benefit-card, .step, .portfolio-card, .about-panel, .contact-form');
+      interactiveCards.forEach(card => {
+        card.addEventListener('pointermove', ev => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--pointer-x', `${ev.clientX - rect.left}px`);
+          card.style.setProperty('--pointer-y', `${ev.clientY - rect.top}px`);
+        }, {passive:true});
+        card.addEventListener('pointerleave', () => {
+          card.style.setProperty('--pointer-x', '50%');
+          card.style.setProperty('--pointer-y', '50%');
+        }, {passive:true});
+      });
+      const heroVisual = $('.hero-visual');
+      const dashboard = $('.dashboard-window');
+      if (heroVisual && dashboard) {
+        heroVisual.addEventListener('pointermove', ev => {
+          const rect = heroVisual.getBoundingClientRect();
+          const x = (ev.clientX - rect.left) / rect.width - .5;
+          const y = (ev.clientY - rect.top) / rect.height - .5;
+          dashboard.style.setProperty('--hero-tilt-x', `${x * 3.5}deg`);
+          dashboard.style.setProperty('--hero-tilt-y', `${-y * 3.5}deg`);
+        }, {passive:true});
+        heroVisual.addEventListener('pointerleave', () => {
+          dashboard.style.setProperty('--hero-tilt-x', '0deg');
+          dashboard.style.setProperty('--hero-tilt-y', '0deg');
+        }, {passive:true});
+      }
+    }
   }
   function handleSubmit(e){
     e.preventDefault();

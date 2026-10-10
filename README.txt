@@ -40,6 +40,10 @@ MAINTENANCE PLANS
 -----------------
 Every maintenance plan has a defined number of update requests and menu-item edits per month. New features, major redesigns, paid platform fees and custom backend work are excluded unless separately quoted. Annual prices are shown on the page.
 
+ANIMATED VISUAL DESIGN
+----------------------
+The site now includes a subtle animated aurora/grid background, floating hero mockup, cursor-reactive card lighting, hover depth, scroll progress, and reveal-on-scroll effects. The animations use CSS and lightweight JavaScript with no added animation library. Motion-sensitive settings are respected through prefers-reduced-motion, and the motion is reduced on touch/mobile devices.
+
 PUBLISHING UPDATED FILES
 -----------------------
 Upload index.html, styles.css, config.js, script.js and README.txt to the same folder in your GitHub Pages repository. Confirm replacement of same-named files, then commit the changes. Keep any other assets/folders already in the repository.
