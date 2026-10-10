@@ -15,7 +15,7 @@ const SITE_CONFIG = {
   instagramDisplay: "@ved_digitalservices",
   location: "Belagavi, Karnataka, India",
   tagline: "Professional Digital Solutions for Local Businesses",
-  heroMessage: "Professional websites, digital QR menus, online ordering and payment solutions designed for cafes, restaurants and small businesses."
+  heroMessage: "Websites, NFC tap cards, QR digital menus, Google Reviews, social media setup, WhatsApp chat and payment options for cafes, restaurants and small businesses."
 },
   theme: {
     accent: "#7c5cff",
@@ -23,6 +23,53 @@ const SITE_CONFIG = {
     dark: "#0b1020"
   },
   services: [
+    {
+      id: "nfc-website-card",
+      name: "NFC Website Tap Card Setup",
+      price: "Starting at ₹299 (setup)",
+      short: "A tap card that opens the café or business’s own website directly on a compatible phone.",
+      features: ["Program NFC chip with the business website URL", "Tap-to-open website experience", "Test the card before handover", "Website can include menu, WhatsApp, location, reviews and social links", "Physical NFC card charged separately unless included in the quote"],
+      note: "The business website must already be live. NFC card/printing cost is separate unless quoted."
+    },
+    {
+      id: "nfc-review-card",
+      name: "NFC Google Review Card Setup",
+      price: "Starting at ₹399 (setup)",
+      short: "A separate tap card that opens the business’s Google review link directly.",
+      features: ["Set up the business’s review link", "Program the NFC chip to open that link", "Test tap-to-open behaviour", "Optional QR code alternative", "Physical card/printing charged separately unless included"],
+      note: "The business needs an eligible Google Business Profile and should invite honest reviews without offering rewards for reviews."
+    },
+    {
+      id: "google-business-review",
+      name: "Google Business & Review Link Setup",
+      price: "Starting at ₹499",
+      short: "Help customers discover the business and make it easy to open its Google review page.",
+      features: ["Business profile setup assistance", "Review link setup where available", "Add website and contact links", "Create a shareable review link or QR", "Client retains ownership and access to the profile"],
+      note: "Verification and approval are controlled by Google and cannot be guaranteed."
+    },
+    {
+      id: "social-profiles",
+      name: "Instagram & Facebook Business Setup",
+      price: "Starting at ₹699",
+      short: "Set up or tidy the business’s social profiles and connect them to its website.",
+      features: ["Business profile setup assistance", "Profile name and bio assistance", "Add website, WhatsApp and contact links", "Connect social links to the website", "Basic profile branding guidance", "Client keeps ownership of accounts and passwords"],
+      note: "Account eligibility, platform verification and features depend on Instagram and Facebook."
+    },
+    {
+      id: "whatsapp-chat",
+      name: "WhatsApp Direct Chat Setup",
+      price: "Starting at ₹299",
+      short: "Add a WhatsApp button that opens a direct chat with the business.",
+      features: ["Click-to-chat WhatsApp link", "Optional pre-filled enquiry message", "Add button to website or digital menu", "Test the link on mobile", "Use the business’s own WhatsApp number"]
+    },
+    {
+      id: "upi-qr-setup",
+      name: "Business UPI QR Display Setup",
+      price: "Starting at ₹499",
+      short: "Display the business’s own UPI QR code on its menu or website so customers can pay the business directly.",
+      features: ["Add business-supplied UPI QR image", "Place payment instructions on menu or website", "Mobile-friendly display", "Test that the QR image opens clearly", "Payment goes to the business’s own payment account"],
+      note: "This is QR display/setup, not automatic payment verification. Payment gateway integration is quoted separately and may have provider fees."
+    },
     {
       id: "qr-menu",
       name: "Digital QR Menu",
@@ -72,7 +119,7 @@ const SITE_CONFIG = {
     { name: "Ordering System Maintenance", monthly: "₹399/month", yearly: "₹3,999/year", features: ["Menu updates", "Price updates", "Ordering system maintenance", "Minor website changes", "Basic troubleshooting"] },
     { name: "Full System Maintenance", monthly: "₹699/month", yearly: "₹6,999/year", features: ["Website maintenance", "Menu updates", "Ordering system maintenance", "Payment/order system support", "Minor design/content changes", "Basic troubleshooting"] }
   ],
-  benefits: ["Professional Design", "Mobile-Friendly Website", "QR Code", "Digital Menu", "Online Ordering", "Owner Dashboard", "Payment Options", "WhatsApp Contact", "Hosting Setup", "Custom Branding", "Menu Updates", "Technical Support"],
+  benefits: ["Professional Design", "Mobile-Friendly Website", "NFC Tap Cards", "QR Code", "Digital Menu", "Google Review Link", "Instagram & Facebook Links", "WhatsApp Direct Chat", "Online Ordering", "Payment Options", "Owner Dashboard (where built)", "Hosting Setup", "Custom Branding", "Menu Updates", "Technical Support"],
   steps: [
     { title: "Contact Us", text: "Client contacts us through WhatsApp, phone or email." },
     { title: "Share Your Requirements", text: "Client shares their menu, logo, business information, photos and required features." },
@@ -88,6 +135,10 @@ const SITE_CONFIG = {
   ],
   faq: [
     { q: "How can I get a digital QR menu?", a: "Send us your existing menu, logo and business details. We will create the digital menu and provide the QR code." },
+    { q: "What happens when a customer taps an NFC card?", a: "We can program the card to open the business’s live website directly. A separate NFC review card can open the business’s Google review link." },
+    { q: "Can you set up Google Reviews, Instagram and Facebook?", a: "We can help prepare profile details and connect approved business links. The business owner should keep ownership, recovery options and account passwords." },
+    { q: "Can the NFC card be included in the setup price?", a: "NFC programming/setup and the physical card are priced separately unless the quote clearly says the card and printing are included." },
+    { q: "Does adding a UPI QR automatically verify payments?", a: "No. Displaying a business UPI QR lets customers scan and pay, but automatic payment verification requires a suitable payment provider and technical integration." },
     { q: "Can customers order directly from the website?", a: "Yes. Our ordering packages can include cart, customer details, table number, order confirmation and an owner/chef dashboard." },
     { q: "Can customers pay online?", a: "Yes. The full ordering package can include an online payment option using the business owner's own payment/UPI details." },
     { q: "Will payments come directly to my business?", a: "Yes. The business should use its own UPI/payment account so payments go directly to the business." },
