@@ -51,15 +51,17 @@
   function esc(value){
     return String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   }
-  function featureList(items){
-    return `<ul class="feature-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  function featureList(items, kind='included'){
+    if(!items || !items.length) return '';
+    const title = kind === 'excluded' ? 'Not included' : 'Included';
+    return `<div class="scope-block ${kind}"><h4>${title}</h4><ul class="feature-list ${kind}-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   }
   function renderServices(){
     $('#serviceGrid').innerHTML = cfg.services.map((s,i)=>`
       <article class="service-card reveal">
         <div class="card-top"><div class="service-icon">${['▦','🛎','₹','⌂','▥','✦'][i%6]}</div><span class="eyebrow">${String(i+1).padStart(2,'0')}</span></div>
         <h3>${esc(s.name)}</h3><p>${esc(s.short)}</p>
-        <div class="price">${esc(s.price)}</div>${featureList(s.features)}
+        <div class="price">${esc(s.price)}</div>${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}
         ${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
         <div class="card-actions"><a class="btn btn-secondary btn-wide service-cta" href="#contact" data-service="${esc(s.name)}">Get This Service</a></div>
       </article>`).join('');
@@ -69,13 +71,13 @@
       <article class="price-card reveal">
         <div class="card-top"><span class="eyebrow">Package ${String(i+1).padStart(2,'0')}</span><span class="service-icon">${i===0?'▦':i===1?'🛎':i===2?'₹':i===3?'⌂':i===4?'▥':'✦'}</span></div>
         <h3>${esc(s.name)}</h3><p>${esc(s.short)}</p><div class="price">${esc(s.price)}</div>
-        ${featureList(s.features)}${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
+        ${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
         <div class="card-actions"><a class="btn btn-primary btn-wide service-cta" href="#contact" data-service="${esc(s.name)}">Get This Service</a></div>
       </article>`).join('');
   }
   function renderMaintenance(){
     $('#maintenanceGrid').innerHTML = cfg.maintenance.map((m,i)=>`
-      <article class="maintenance-card reveal"><div class="eyebrow">Plan ${i+1}</div><h3>${esc(m.name)}</h3><div class="price">${esc(m.monthly)}</div><div class="yearly">${esc(m.yearly)}</div>${featureList(m.features)}</article>`).join('');
+      <article class="maintenance-card reveal"><div class="eyebrow">Plan ${i+1}</div><h3>${esc(m.name)}</h3><div class="price">${esc(m.monthly)}</div><div class="yearly">or ${esc(m.yearly)}</div>${featureList(m.features, 'included')}${featureList(m.exclusions, 'excluded')}</article>`).join('');
   }
   function renderBenefits(){
     $('#benefitGrid').innerHTML = cfg.benefits.map((b,i)=>`<div class="benefit-card reveal"><span class="benefit-icon">✓</span><span>${esc(b)}</span></div>`).join('');

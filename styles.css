@@ -84,9 +84,15 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .
 .service-card h3,.price-card h3,.maintenance-card h3 { margin:16px 0 7px; font-size:1.15rem; }
 .service-card p,.price-card p,.maintenance-card p { color:var(--muted); font-size:.88rem; }
 .price { font-size:1.8rem; font-weight:800; letter-spacing:-.04em; margin-top:15px; }
-.feature-list { list-style:none; padding:0; margin:20px 0 0; display:grid; gap:9px; color:#ccd2e0; font-size:.84rem; }
+.scope-block { margin-top:18px; }
+.scope-block h4 { margin:0 0 8px; font-size:.76rem; text-transform:uppercase; letter-spacing:.09em; color:#dfe5f4; }
+.scope-block.excluded { border-top:1px solid var(--line); padding-top:14px; }
+.scope-block.excluded h4 { color:#f0c3b8; }
+.feature-list { list-style:none; padding:0; margin:0; display:grid; gap:9px; color:#ccd2e0; font-size:.84rem; }
 .feature-list li { display:flex; gap:9px; align-items:flex-start; }
-.feature-list li::before { content:"✓"; color:var(--accent-2); font-weight:900; }
+.feature-list.included-list li::before { content:"✓"; color:var(--accent-2); font-weight:900; }
+.feature-list.excluded-list li::before { content:"−"; color:#f0a99b; font-weight:900; }
+.note { margin-top:18px; color:#98a1b6; font-size:.74rem; border-top:1px solid var(--line); padding-top:13px; }
 .card-actions { margin-top:auto; padding-top:24px; }
 .note { margin-top:18px; color:#98a1b6; font-size:.74rem; border-top:1px solid var(--line); padding-top:13px; }
 .custom-note { margin-top:20px; color:#9ea7bb; text-align:center; }
