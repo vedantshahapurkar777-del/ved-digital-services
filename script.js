@@ -246,60 +246,34 @@
     const heroVisual = $('.hero-visual');
     if (reduceMotion) {
       revealItems.forEach(el => el.classList.add('in'));
-    } else if (window.gsap && window.ScrollTrigger) {
-      // Real GSAP intro and scroll-triggered reveals; falls back to IntersectionObserver if the CDN is unavailable.
-      gsap.registerPlugin(ScrollTrigger);
-      document.documentElement.classList.add('gsap-motion-active');
-      // Cinematic first-screen product selection: the three service mockups enter like a product launch stage.
+    } else if (window.gsap) {
+      // Keep GSAP only for the small, one-time product chooser intro. No scroll plugin/continuous parallax.
       const gatewayCards = $$('.gateway-card');
       if (gatewayCards.length) {
         gsap.timeline({ defaults: { ease: 'power3.out' } })
-          .fromTo('.gateway-kicker', { autoAlpha: 0, y: 18, letterSpacing: '.32em' }, { autoAlpha: 1, y: 0, letterSpacing: '.2em', duration: .55 })
-          .fromTo('.gateway-heading h1', { autoAlpha: 0, y: 28, scale: .97 }, { autoAlpha: 1, y: 0, scale: 1, duration: .72 }, '-=.24')
-          .fromTo('.gateway-heading p', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .48 }, '-=.34')
-          .fromTo(gatewayCards, { autoAlpha: 0, y: 72, rotateX: 8, scale: .88 }, { autoAlpha: 1, y: 0, rotateX: 0, scale: 1, duration: .86, stagger: .13, clearProps: 'transform,opacity,visibility' }, '-=.18')
-          .fromTo('.gateway-foot', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .42, clearProps: 'transform,opacity,visibility' }, '-=.32');
+          .fromTo('.gateway-kicker', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: .42 })
+          .fromTo('.gateway-heading h1', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .52 }, '-=.18')
+          .fromTo('.gateway-heading p', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: .32 }, '-=.24')
+          .fromTo(gatewayCards, { autoAlpha: 0, y: 35, scale: .96 }, { autoAlpha: 1, y: 0, scale: 1, duration: .58, stagger: .08, clearProps: 'transform,opacity,visibility' }, '-=.12')
+          .fromTo('.gateway-foot', { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: .28, clearProps: 'transform,opacity,visibility' }, '-=.18');
       }
       heroCopy?.classList.add('in');
       heroVisual?.classList.add('in');
-      gsap.fromTo('.hero-copy > *',
-        { autoAlpha: 0, y: 28 },
-        { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.12, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }
-      );
-      if (heroVisual) {
-        gsap.fromTo(heroVisual.querySelector('.dashboard-window'),
-          { autoAlpha: 0, y: 38, rotateY: -8, scale: 0.94 },
-          { autoAlpha: 1, y: 0, rotateY: 0, scale: 1, duration: 1.05, delay: 0.16, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }
-        );
-        gsap.fromTo(heroVisual.querySelectorAll('.mini-card'),
-          { autoAlpha: 0, y: 22, z: -25 },
-          { autoAlpha: 1, y: 0, z: 0, duration: 0.72, stagger: 0.13, delay: 0.55, ease: 'back.out(1.35)', clearProps: 'transform,opacity,visibility' }
-        );
-      }
-      revealItems.forEach((el, index) => {
-        if (el === heroCopy || el === heroVisual) return;
-        gsap.fromTo(el,
-          { autoAlpha: 0, y: 34, rotateX: 2 },
-          {
-            autoAlpha: 1, y: 0, rotateX: 0,
-            duration: 0.72, delay: (index % 3) * 0.055,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-            onComplete: () => {
-              el.classList.add('in');
-              gsap.set(el, { clearProps: 'opacity,visibility,transform' });
-            }
+      // All lower sections use IntersectionObserver rather than dozens of ScrollTrigger instances.
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+        }), { threshold: .06, rootMargin: '0px 0px -24px 0px' });
+        revealItems.forEach((el, i) => {
+          if (el === heroCopy || el === heroVisual) return;
+          if (el.classList.contains('service-card') || el.classList.contains('price-card') || el.classList.contains('maintenance-card')) {
+            el.style.transitionDelay = `${(i % 3) * 45}ms`;
           }
-        );
-      });
-      // Gentle scroll-linked parallax for the ambient grid adds depth without hiding content.
-      if ($('.ambient-grid')) {
-        gsap.to('.ambient-grid', {
-          yPercent: 13, ease: 'none',
-          scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.8 }
+          io.observe(el);
         });
+      } else {
+        revealItems.forEach(el => el.classList.add('in'));
       }
-      window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
     } else if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver(entries=>entries.forEach(en=>{
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
@@ -375,23 +349,26 @@
     if (!ctx) return;
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    let w = 0, h = 0, dpr = 1, raf = 0, frame = 0;
+    const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+    const lowPower = coarse || saveData || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || window.innerWidth <= 760;
+    let w = 0, h = 0, dpr = 1, raf = 0, frame = 0, lastDraw = 0;
     let points = [];
     const pointer = { x: -1000, y: -1000 };
     const rand = (min,max) => min + Math.random()*(max-min);
     function resize(){
-      dpr = Math.min(window.devicePixelRatio || 1, 1.7);
+      // Keep canvas backing resolution small; a full-DPR full-screen canvas is costly on phones.
+      dpr = lowPower ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
       w = Math.max(1, window.innerWidth); h = Math.max(1, window.innerHeight);
       canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr);
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      const amount = coarse ? Math.min(36, Math.max(20, Math.round(w/14))) : Math.min(78, Math.max(38, Math.round(w/18)));
+      const amount = Math.min(20, Math.max(12, Math.round(w/70))); // Fewer nodes; static background keeps CPU/GPU free for interactions.
       points = Array.from({length: amount}, (_,i)=>({
         x: rand(0,w), y: rand(0,h), ox: rand(-.22,.22), oy: rand(-.2,.2),
         r: rand(1.1,2.8), phase: rand(0,Math.PI*2), speed: rand(.25,.8),
         hue: Math.random() < .72 ? 252 : 171
       }));
-      if (reduceMotion) draw(0, true);
+      draw(0, true); // Render once on load/resize; never run a decorative animation loop.
     }
     function glowLine(x1,y1,x2,y2,alpha,hue=253,width=1){
       ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
@@ -399,13 +376,17 @@
     }
     function draw(time, staticFrame=false){
       if (!ctx) return;
+      // Cap decorative canvas work to 30 FPS on desktop; phones use a single static frame.
+      if (!staticFrame && lowPower) return;
+      if (!staticFrame && time && time - lastDraw < 33) { raf = window.requestAnimationFrame(draw); return; }
+      if (!staticFrame) lastDraw = time || 0;
       const t = (time || 0) * .00022;
       ctx.clearRect(0,0,w,h);
       // Wide flowing ribbons give the page a more cinematic animated background.
       for (let band=0; band<3; band++){
         const baseY = h*(.20 + band*.29);
         ctx.beginPath();
-        for(let x=-30; x<=w+30; x+=18){
+        for(let x=-30; x<=w+30; x+=28){
           const y = baseY + Math.sin(x*.0042 + t*(1.15+band*.18) + band*1.9)* (h*(.045+band*.012)) + Math.cos(x*.008-t*1.4+band)*18;
           if(x===-30) ctx.moveTo(x,y); else ctx.lineTo(x,y);
         }
@@ -423,7 +404,7 @@
           const qx=q.x+Math.sin(t*7*q.speed+q.phase)*18+q.ox*w*.1;
           const qy=q.y+Math.cos(t*6*q.speed+q.phase)*15+q.oy*h*.1;
           const dx=x-qx,dy=y-qy,dist=Math.hypot(dx,dy);
-          const maxDist = Math.min(150, w*.14);
+          const maxDist = Math.min(118, w*.12);
           if(dist<maxDist){
             const alpha=(1-dist/maxDist)* (staticFrame?.12:.22);
             glowLine(x,y,qx,qy,alpha,(p.hue+q.hue)/2,.7);
@@ -432,28 +413,20 @@
         const pulse = staticFrame ? 1 : .72 + .28*Math.sin(t*18+p.phase);
         ctx.beginPath(); ctx.arc(x,y,p.r*pulse,0,Math.PI*2);
         ctx.fillStyle=`hsla(${p.hue}, 100%, ${p.hue===171?70:76}%, ${staticFrame?.4:.74})`;
-        ctx.shadowBlur=staticFrame?5:12; ctx.shadowColor=p.hue===171?'rgba(32,211,162,.9)':'rgba(124,92,255,.95)'; ctx.fill();
+        ctx.shadowBlur=staticFrame?2:4; ctx.shadowColor=p.hue===171?'rgba(32,211,162,.75)':'rgba(124,92,255,.75)'; ctx.fill();
       });
       ctx.shadowBlur=0;
       // Cursor creates a small energy halo and draws nearby links.
-      if(!coarse && pointer.x>-100){
+      if(!lowPower && pointer.x>-100){
         const halo=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,150);
         halo.addColorStop(0,'rgba(124,92,255,.16)'); halo.addColorStop(1,'rgba(124,92,255,0)');
         ctx.fillStyle=halo; ctx.fillRect(pointer.x-150,pointer.y-150,300,300);
         points.forEach(p=>{ const dx=p._x-pointer.x,dy=p._y-pointer.y,dist=Math.hypot(dx,dy); if(dist<180) glowLine(pointer.x,pointer.y,p._x,p._y,(1-dist/180)*.32,p.hue,1); });
       }
-      if(!staticFrame){ frame++; raf = window.requestAnimationFrame(draw); }
+      if(!staticFrame && !document.hidden){ frame++; raf = window.requestAnimationFrame(draw); }
     }
-    window.addEventListener('pointermove',e=>{pointer.x=e.clientX;pointer.y=e.clientY;},{passive:true});
-    document.documentElement.addEventListener('pointerleave',()=>{pointer.x=-1000;pointer.y=-1000;},{passive:true});
     window.addEventListener('resize', resize, {passive:true});
     resize();
-    if(!reduceMotion){ raf=window.requestAnimationFrame(draw); }
-    // Avoid spending frames while the tab is hidden.
-    document.addEventListener('visibilitychange',()=>{
-      if(document.hidden && raf) { window.cancelAnimationFrame(raf); raf=0; }
-      else if(!document.hidden && !reduceMotion && !raf) raf=window.requestAnimationFrame(draw);
-    });
   }
 
   function handleSubmit(e){

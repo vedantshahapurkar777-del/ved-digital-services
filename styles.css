@@ -780,3 +780,55 @@ html.gsap-motion-active .hero-copy > *, html.gsap-motion-active .hero-visual .da
 @media (prefers-reduced-motion: reduce) {
   .gateway-card, .gateway-card::before, .gateway-card .gateway-art, .service-gateway::before { transition: none !important; }
 }
+
+/* PERFORMANCE PATCH: preserve the cinematic chooser, lighten background layers. */
+/* Avoid promoting every content card into a permanent GPU layer. */
+.service-card, .price-card, .maintenance-card, .benefit-card, .step,
+.portfolio-card, .about-panel, .contact-form { will-change: auto; }
+.service-card:hover, .price-card:hover, .maintenance-card:hover, .benefit-card:hover,
+.step:hover, .portfolio-card:hover, .about-panel:hover, .contact-form:hover { will-change: transform; }
+/* Do not animate blur filters during service-view transitions; opacity/translate are cheaper. */
+.gateway-card::before { filter: none; }
+
+@media (max-width: 760px), (pointer: coarse), (prefers-reduced-data: reduce) {
+  .site-header { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(8,11,21,.96); }
+  .ambient-grid, .ambient-orb, .ambient-streak { animation: none !important; }
+  .ambient-orb { filter: none !important; opacity: .16; }
+  .ambient-grid { opacity: .075; }
+  .motion-canvas { opacity: .22; }
+  .hero-visual, .glow, .dashboard-window, .mini-card, .btn-primary { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  .glow { filter: none; opacity: .45; }
+  .gateway-card::before { filter: none; opacity: .18; }
+  .gateway-card:hover .gateway-art, .gateway-card:focus-visible .gateway-art { filter: none; }
+  .service-detail.is-visible .detail-service-card,
+  .service-detail.is-visible .detail-maintenance-card { will-change: auto; }
+}
+@media (max-width: 420px) {
+  .gateway-products { perspective: none; }
+  .gateway-menu, .gateway-website, .gateway-nfc { transform: none; }
+  .gateway-card { transition: transform .28s ease, opacity .24s ease; }
+  .gateway-art { transform: none; transition: none; }
+  .menu-phone, .website-screen, .nfc-phone, .nfc-card-object { box-shadow: 0 10px 18px rgba(0,0,0,.28); }
+}
+
+
+/* DESKTOP PERFORMANCE MODE: retain the 3-service chooser; stop decorative GPU loops. */
+.ambient-grid, .ambient-orb, .ambient-streak,
+.hero-visual::before, .hero-visual::after,
+.dashboard-window, .mock-phone, .fake-qr::after, .site-lines i, .status .dot,
+.orbit-a, .orbit-b, .signal-one, .signal-two { animation: none !important; }
+.site-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(8,11,21,.96); }
+.ambient-orb { filter: none !important; opacity: .12; }
+.ambient-streak { filter: none !important; opacity: .12; }
+.motion-canvas { opacity: .17; }
+.hero-visual::before, .hero-visual::after { box-shadow: none; }
+.dashboard-window { box-shadow: 0 18px 45px rgba(0,0,0,.28); }
+.gateway-card::before { filter: none !important; }
+.gateway-card:hover .gateway-art, .gateway-card:focus-visible .gateway-art { filter: none; }
+@media (hover: hover) and (pointer: fine) {
+  .menu-phone, .website-screen, .nfc-phone, .nfc-card-object { animation-duration: 8s; }
+}
+/* Final low-jank pass: all always-running decoration is stopped; hover/click transitions remain. */
+.hero-visual, .glow, .mini-card, .btn-primary,
+.menu-phone, .website-screen, .nfc-phone, .nfc-card-object,
+.orbit-a, .orbit-b, .signal-one, .signal-two { animation: none !important; }
