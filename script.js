@@ -92,11 +92,139 @@
   function renderFaq(){
     $('#faqList').innerHTML = cfg.faq.map((f,i)=>`<article class="faq-item reveal"><button class="faq-q" type="button" aria-expanded="false"><span>${esc(f.q)}</span><span class="faq-plus">+</span></button><div class="faq-a"><p>${esc(f.a)}</p></div></article>`).join('');
   }
+
+  // The first screen acts as a service chooser. Each choice gets its own focused
+  // price/features/maintenance view, while the rest of the full site stays below.
+  const serviceGroups = {
+    menu: {
+      title: 'Digital Menu',
+      eyebrow: '01 · MENU & ORDERING',
+      accent: '#edb779',
+      intro: 'Explore QR menus and ordering options for cafes, restaurants and shops. Each package lists what is included, what costs extra, and which care plan can cover later updates.',
+      ids: ['qr-menu','menu-ordering','website-qr','website-ordering','full-ordering-payment'],
+      note: 'Menu maintenance covers the existing digital menu and agreed content edits. New ordering features, integrations and major rebuilds are quoted separately.'
+    },
+    website: {
+      title: 'Business Website',
+      eyebrow: '02 · WEBSITE & WEB PRESENCE',
+      accent: '#9990ff',
+      intro: 'Compare a standalone business website with website-plus-menu and ordering bundles. Paid domain, hosting and third-party subscriptions are separate unless a written quote includes them.',
+      ids: ['business-website','website-qr','website-ordering','full-ordering-payment'],
+      note: 'Website care covers small agreed updates to the existing website. Domain, paid hosting, provider subscriptions and major new features are separate.'
+    },
+    nfc: {
+      title: 'NFC Tap Card',
+      eyebrow: '03 · TAP CARDS & REVIEWS',
+      accent: '#3edcc5',
+      intro: 'Choose a tap-card setup for a website link or a Google review link. Setup prices are shown separately from the physical card, printing and delivery.',
+      ids: ['nfc-website-card','nfc-review-card'],
+      note: 'The listed NFC prices are one-time setup charges. Physical card/stand, printing and delivery are not included unless quoted. There is no separate recurring NFC-card maintenance price in the current price list; website/menu care plans apply to the linked digital page, not the physical card.'
+    }
+  };
+  let gatewayAnimating = false;
+  function renderServiceCategory(key){
+    if (gatewayAnimating) return;
+    const group = serviceGroups[key];
+    if (!group) return;
+    const products = cfg.services.filter(service => group.ids.includes(service.id));
+    const serviceCards = products.map((service, index) => `
+      <article class="detail-service-card">
+        <div class="card-top"><span class="eyebrow">OPTION ${String(index + 1).padStart(2,'0')}</span><span class="service-icon">${key === 'menu' ? '▦' : key === 'website' ? '⌘' : '⌁'}</span></div>
+        <h3>${esc(service.name)}</h3><p>${esc(service.short)}</p>
+        <div class="price">${esc(service.price)}</div>
+        ${featureList(service.features, 'included')}
+        ${featureList(service.exclusions, 'excluded')}
+        ${service.note ? `<div class="note">${esc(service.note)}</div>` : ''}
+        <div class="card-actions"><a class="btn btn-primary btn-wide service-cta" href="#contact" data-service="${esc(service.name)}">Get a Quote</a></div>
+      </article>`).join('');
+    const maintenanceCards = cfg.maintenance.map((plan,index)=>`
+      <article class="detail-maintenance-card">
+        <span class="eyebrow">CARE PLAN ${String(index+1).padStart(2,'0')}</span>
+        <h4>${esc(plan.name)}</h4><div class="price">${esc(plan.monthly)}</div><div class="yearly">or ${esc(plan.yearly)}</div>
+        ${featureList(plan.features.slice(0,4), 'included')}
+      </article>`).join('');
+    const detail = $('#serviceDetail');
+    const gateway = $('#choose-service');
+    const cards = $$('.gateway-card');
+    const selected = cards.find(button => button.dataset.category === key);
+    detail.style.setProperty('--detail-accent', group.accent);
+    detail.innerHTML = `
+      <div class="detail-topline"><button class="detail-back" type="button" id="backToChoices">← All services</button><span class="detail-code">VED DIGITAL SERVICES / ${esc(group.eyebrow)}</span></div>
+      <div class="detail-heading"><div class="kicker">Selected experience</div><h2 id="detailTitle">${esc(group.title)}</h2><p>${esc(group.intro)}</p></div>
+      <div class="detail-service-grid">${serviceCards}</div>
+      <div class="detail-care">
+        <div class="detail-care-head"><div><div class="kicker">Maintenance & updates</div><h3>Keep it running smoothly.</h3></div><p>${esc(group.note)}</p></div>
+        <div class="detail-maintenance-grid">${maintenanceCards}</div>
+      </div>
+      <div class="detail-footer-cta"><p>Need a package matched to your business? Tell us what you need and we’ll confirm the scope.</p><a class="btn btn-secondary" href="#contact" data-service="${esc(group.title)} Enquiry">Talk about this service ↗</a></div>`;
+    detail.hidden = false;
+    cards.forEach(button => {
+      const isSelected = button.dataset.category === key;
+      button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      button.classList.toggle('is-selected', isSelected);
+      button.classList.toggle('is-away', !isSelected);
+    });
+
+    $('#backToChoices').addEventListener('click', () => {
+      detail.hidden = true;
+      gatewayAnimating = false;
+      gateway.classList.remove('gateway-transitioned', 'gateway-transitioning');
+      cards.forEach(button => {
+        button.setAttribute('aria-pressed','false');
+        button.classList.remove('is-away','is-selected');
+      });
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (window.gsap && !reduce) {
+        gsap.killTweensOf([gateway, ...cards, $('.gateway-heading'), $('.gateway-foot'), $('.gateway-inner')]);
+        gsap.set([gateway, ...cards, $('.gateway-heading'), $('.gateway-foot'), $('.gateway-inner')], { clearProps: 'all' });
+        gsap.fromTo('.gateway-inner', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .72, ease: 'power3.out', clearProps: 'all' });
+      }
+      gateway.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+    });
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.gsap && !reduce && selected) {
+      gatewayAnimating = true;
+      gateway.classList.add('gateway-transitioning');
+      const others = cards.filter(button => button !== selected);
+      const selectedIndex = cards.indexOf(selected);
+      const timeline = gsap.timeline({
+        defaults: { ease: 'power3.inOut' },
+        onComplete: () => {
+          gateway.classList.add('gateway-transitioned');
+          detail.classList.add('is-visible');
+          detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const reveal = [detail.querySelector('.detail-topline'), detail.querySelector('.detail-heading'), ...detail.querySelectorAll('.detail-service-card'), detail.querySelector('.detail-care-head'), ...detail.querySelectorAll('.detail-maintenance-card'), detail.querySelector('.detail-footer-cta')].filter(Boolean);
+          gsap.fromTo(reveal, { autoAlpha: 0, y: 28, filter: 'blur(5px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .62, stagger: .075, ease: 'power3.out', delay: .12, clearProps: 'all', onComplete: () => { gatewayAnimating = false; } });
+        }
+      });
+      timeline
+        .to(others, {
+          x: button => (cards.indexOf(button) < selectedIndex ? -95 : 95),
+          y: 28,
+          rotateY: button => (cards.indexOf(button) < selectedIndex ? -17 : 17),
+          scale: .82,
+          autoAlpha: 0,
+          duration: .48,
+          stagger: .035
+        }, 0)
+        .to(selected, { y: -26, z: 100, scale: 1.08, rotateY: 0, duration: .62 }, 0)
+        .to('.gateway-heading', { autoAlpha: 0, y: -24, duration: .32, ease: 'power2.in' }, .08)
+        .to('.gateway-foot', { autoAlpha: 0, y: 16, duration: .25, ease: 'power2.in' }, .08)
+        .to('.gateway-inner', { autoAlpha: 0, y: -28, duration: .34, ease: 'power2.in' }, .5);
+    } else {
+      gateway.classList.add('gateway-transitioned');
+      detail.classList.add('is-visible');
+      detail.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+      gatewayAnimating = false;
+    }
+  }
   function populateServiceSelect(){
     const options = cfg.services.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('') + '<option value="Maintenance">Maintenance</option><option value="Custom Requirement">Custom Requirement</option>';
     $('#serviceSelect').innerHTML = options;
   }
   function bindUi(){
+    $$('.gateway-card').forEach(button => button.addEventListener('click', () => renderServiceCategory(button.dataset.category)));
     const toggle = $('.menu-toggle');
     toggle.addEventListener('click',()=>{
       const nav = $('#navLinks'); const open = nav.classList.toggle('open'); toggle.setAttribute('aria-expanded', open ? 'true':'false');
@@ -122,6 +250,16 @@
       // Real GSAP intro and scroll-triggered reveals; falls back to IntersectionObserver if the CDN is unavailable.
       gsap.registerPlugin(ScrollTrigger);
       document.documentElement.classList.add('gsap-motion-active');
+      // Cinematic first-screen product selection: the three service mockups enter like a product launch stage.
+      const gatewayCards = $$('.gateway-card');
+      if (gatewayCards.length) {
+        gsap.timeline({ defaults: { ease: 'power3.out' } })
+          .fromTo('.gateway-kicker', { autoAlpha: 0, y: 18, letterSpacing: '.32em' }, { autoAlpha: 1, y: 0, letterSpacing: '.2em', duration: .55 })
+          .fromTo('.gateway-heading h1', { autoAlpha: 0, y: 28, scale: .97 }, { autoAlpha: 1, y: 0, scale: 1, duration: .72 }, '-=.24')
+          .fromTo('.gateway-heading p', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .48 }, '-=.34')
+          .fromTo(gatewayCards, { autoAlpha: 0, y: 72, rotateX: 8, scale: .88 }, { autoAlpha: 1, y: 0, rotateX: 0, scale: 1, duration: .86, stagger: .13, clearProps: 'transform,opacity,visibility' }, '-=.18')
+          .fromTo('.gateway-foot', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .42, clearProps: 'transform,opacity,visibility' }, '-=.32');
+      }
       heroCopy?.classList.add('in');
       heroVisual?.classList.add('in');
       gsap.fromTo('.hero-copy > *',

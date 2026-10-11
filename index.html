@@ -46,6 +46,46 @@
   </header>
 
   <main>
+    <!-- First-screen service selection inspired by the reference's three-product chooser. -->
+    <section class="service-gateway" id="choose-service" aria-labelledby="gateway-title">
+      <div class="gateway-inner container">
+        <div class="gateway-heading">
+          <span class="gateway-kicker">VED DIGITAL SERVICES · INTERACTIVE STUDIO</span>
+          <h1 id="gateway-title">CHOOSE YOUR <span>DIGITAL EXPERIENCE</span></h1>
+          <p>Choose a service to explore its packages, pricing and maintenance options.</p>
+        </div>
+        <div class="gateway-products" role="group" aria-label="Choose a digital service">
+          <button class="gateway-card gateway-menu" type="button" data-category="menu" aria-pressed="false">
+            <span class="gateway-card-index">01 / EXPLORE</span>
+            <span class="gateway-art menu-art" aria-hidden="true">
+              <span class="menu-phone"><span class="menu-notch"></span><span class="menu-brand">THE DAILY TABLE</span><span class="menu-hero-food">🍜</span><span class="menu-section-label">TODAY'S MENU</span><span class="menu-food-row"><i>🥗</i><b><em>Garden Bowl</em><small>Fresh & colourful</small></b><strong>₹149</strong></span><span class="menu-food-row"><i>🍕</i><b><em>Stone Pizza</em><small>Made to order</small></b><strong>₹249</strong></span><span class="menu-food-row"><i>🥤</i><b><em>Cold Coffee</em><small>House favourite</small></b><strong>₹129</strong></span><span class="menu-scan">SCAN · BROWSE · ORDER</span></span>
+            </span>
+            <span class="gateway-card-bottom"><span class="gateway-card-type">MENU · QR · ORDERING</span><strong>DIGITAL MENU</strong><span class="gateway-card-link">View packages <i>↗</i></span></span>
+          </button>
+          <button class="gateway-card gateway-website" type="button" data-category="website" aria-pressed="false">
+            <span class="gateway-card-index">02 / EXPLORE</span>
+            <span class="gateway-art website-art" aria-hidden="true">
+              <span class="website-screen"><span class="browser-bar"><i></i><i></i><i></i><b>yourbusiness.in</b></span><span class="website-nav"><b>STUDIO<span>+</span></b><i>ABOUT</i><i>SERVICES</i><i>CONTACT</i></span><span class="website-copy"><small>BUILT FOR YOUR BUSINESS</small><b>Make your<br>first impression<br><em>count.</em></b><i>Thoughtful digital experiences<br>for growing local brands.</i><span>DISCOVER MORE　↗</span></span><span class="website-picture"><i>✦</i><b>YOUR<br>BRAND</b></span><span class="website-bottom"><i></i><i></i><i></i></span></span>
+              <span class="website-orbit orbit-a"></span><span class="website-orbit orbit-b"></span>
+            </span>
+            <span class="gateway-card-bottom"><span class="gateway-card-type">DESIGN · DEVELOPMENT · HOSTING</span><strong>BUSINESS WEBSITE</strong><span class="gateway-card-link">View packages <i>↗</i></span></span>
+          </button>
+          <button class="gateway-card gateway-nfc" type="button" data-category="nfc" aria-pressed="false">
+            <span class="gateway-card-index">03 / EXPLORE</span>
+            <span class="gateway-art nfc-art" aria-hidden="true">
+              <span class="nfc-phone"><span class="nfc-speaker"></span><span class="nfc-screen-logo">VED<span>+</span></span><span class="nfc-wave">)))</span><small>TAP TO CONNECT</small><span class="nfc-contact-pill">SAVE CONTACT ↗</span></span>
+              <span class="nfc-card-object"><span class="nfc-chip"></span><span class="nfc-waves">)))</span><b>VED<span> DIGITAL</span></b><small>SMART NFC CARD</small><i>Tap. Connect. Grow.</i></span>
+              <span class="nfc-signal signal-one"></span><span class="nfc-signal signal-two"></span>
+            </span>
+            <span class="gateway-card-bottom"><span class="gateway-card-type">TAP CARDS · GOOGLE REVIEWS</span><strong>NFC TAP CARD</strong><span class="gateway-card-link">View packages <i>↗</i></span></span>
+          </button>
+        </div>
+        <div class="gateway-foot"><span class="gateway-foot-line"></span><span>SELECT A SERVICE TO BEGIN</span><span class="gateway-foot-line"></span></div>
+      </div>
+    </section>
+
+    <section class="service-detail container" id="serviceDetail" aria-live="polite" aria-labelledby="detailTitle" hidden></section>
+
     <section class="hero container">
       <div class="hero-copy reveal">
         <div class="eyebrow">Professional digital solutions for local businesses</div>

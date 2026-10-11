@@ -36,3 +36,17 @@ HOW TO PUBLISH TO GITHUB PAGES
 IMPORTANT
 ---------
 GitHub Pages publishes static website files. This animation update does not itself add a backend, live order database, private dashboard or automatic payment verification. Those features still need a backend/payment integration.
+
+NEW: CINEMATIC THREE-OPTION SERVICE SELECTOR
+--------------------------------
+The homepage now begins with a cinematic, dark product-stage selector with three selectable service experiences. The first-screen artwork uses CSS-built mockups; GSAP animates the entrance and selected-service transition, with CSS/reduced-motion fallback:
+1. Digital Menu
+2. Business Website
+3. NFC Tap Card
+
+Selecting a service animates the other options away and transitions into a focused package view with configured prices, features, exclusions and care-plan information. Use the “All services” control to return to the selector. Actual rates are maintained in config.js.
+The NFC chooser clearly distinguishes one-time programming from physical card,
+printing/delivery costs and explains that the listed website/menu care plans
+cover digital assets rather than the physical NFC card itself.
+
+The page uses self-contained CSS product mockups for the three choices; no extra image files are required for the selector. The longer page continues to use section-reveal and ambient parallax motion. GSAP/ScrollTrigger load from jsDelivr, so an internet connection is needed for the full GSAP transitions; reduced-motion preference is respected.
