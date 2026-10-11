@@ -114,7 +114,55 @@
     $('#contactForm').addEventListener('submit', handleSubmit);
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const revealItems = $$('.reveal');
-    if ('IntersectionObserver' in window && !reduceMotion) {
+    const heroCopy = $('.hero-copy');
+    const heroVisual = $('.hero-visual');
+    if (reduceMotion) {
+      revealItems.forEach(el => el.classList.add('in'));
+    } else if (window.gsap && window.ScrollTrigger) {
+      // Real GSAP intro and scroll-triggered reveals; falls back to IntersectionObserver if the CDN is unavailable.
+      gsap.registerPlugin(ScrollTrigger);
+      document.documentElement.classList.add('gsap-motion-active');
+      heroCopy?.classList.add('in');
+      heroVisual?.classList.add('in');
+      gsap.fromTo('.hero-copy > *',
+        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 1, y: 0, duration: 0.82, stagger: 0.12, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }
+      );
+      if (heroVisual) {
+        gsap.fromTo(heroVisual.querySelector('.dashboard-window'),
+          { autoAlpha: 0, y: 38, rotateY: -8, scale: 0.94 },
+          { autoAlpha: 1, y: 0, rotateY: 0, scale: 1, duration: 1.05, delay: 0.16, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }
+        );
+        gsap.fromTo(heroVisual.querySelectorAll('.mini-card'),
+          { autoAlpha: 0, y: 22, z: -25 },
+          { autoAlpha: 1, y: 0, z: 0, duration: 0.72, stagger: 0.13, delay: 0.55, ease: 'back.out(1.35)', clearProps: 'transform,opacity,visibility' }
+        );
+      }
+      revealItems.forEach((el, index) => {
+        if (el === heroCopy || el === heroVisual) return;
+        gsap.fromTo(el,
+          { autoAlpha: 0, y: 34, rotateX: 2 },
+          {
+            autoAlpha: 1, y: 0, rotateX: 0,
+            duration: 0.72, delay: (index % 3) * 0.055,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            onComplete: () => {
+              el.classList.add('in');
+              gsap.set(el, { clearProps: 'opacity,visibility,transform' });
+            }
+          }
+        );
+      });
+      // Gentle scroll-linked parallax for the ambient grid adds depth without hiding content.
+      if ($('.ambient-grid')) {
+        gsap.to('.ambient-grid', {
+          yPercent: 13, ease: 'none',
+          scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.8 }
+        });
+      }
+      window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+    } else if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver(entries=>entries.forEach(en=>{
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
       }), {threshold:.08, rootMargin:'0px 0px -28px 0px'});
@@ -199,7 +247,7 @@
       canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr);
       canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
       ctx.setTransform(dpr,0,0,dpr,0,0);
-      const amount = Math.min(94, Math.max(38, Math.round(w/15)));
+      const amount = coarse ? Math.min(36, Math.max(20, Math.round(w/14))) : Math.min(78, Math.max(38, Math.round(w/18)));
       points = Array.from({length: amount}, (_,i)=>({
         x: rand(0,w), y: rand(0,h), ox: rand(-.22,.22), oy: rand(-.2,.2),
         r: rand(1.1,2.8), phase: rand(0,Math.PI*2), speed: rand(.25,.8),
