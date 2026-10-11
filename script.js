@@ -32,6 +32,7 @@
   $('#whatsappLink').href = waHref; $('#contactWhatsAppBtn').href = waHref; $('#footerWhatsApp').href = waHref; $('#floatingWhatsApp').href = waHref;
   $('#instagramLink').href = cfg.business.instagram;
 
+  initMotionGraphics();
   renderServices();
   renderPricing();
   renderMaintenance();
@@ -149,12 +150,18 @@
       interactiveCards.forEach(card => {
         card.addEventListener('pointermove', ev => {
           const rect = card.getBoundingClientRect();
+          const px = (ev.clientX - rect.left) / rect.width;
+          const py = (ev.clientY - rect.top) / rect.height;
           card.style.setProperty('--pointer-x', `${ev.clientX - rect.left}px`);
           card.style.setProperty('--pointer-y', `${ev.clientY - rect.top}px`);
+          card.style.setProperty('--card-tilt-x', `${(0.5 - py) * 5}deg`);
+          card.style.setProperty('--card-tilt-y', `${(px - 0.5) * 5}deg`);
         }, {passive:true});
         card.addEventListener('pointerleave', () => {
           card.style.setProperty('--pointer-x', '50%');
           card.style.setProperty('--pointer-y', '50%');
+          card.style.setProperty('--card-tilt-x', '0deg');
+          card.style.setProperty('--card-tilt-y', '0deg');
         }, {passive:true});
       });
       const heroVisual = $('.hero-visual');
@@ -174,6 +181,95 @@
       }
     }
   }
+  // Visible motion-graphics layer: animated particle field, linked nodes and neon wave trails.
+  function initMotionGraphics(){
+    const canvas = $('#motionCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    let w = 0, h = 0, dpr = 1, raf = 0, frame = 0;
+    let points = [];
+    const pointer = { x: -1000, y: -1000 };
+    const rand = (min,max) => min + Math.random()*(max-min);
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio || 1, 1.7);
+      w = Math.max(1, window.innerWidth); h = Math.max(1, window.innerHeight);
+      canvas.width = Math.round(w*dpr); canvas.height = Math.round(h*dpr);
+      canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      const amount = Math.min(94, Math.max(38, Math.round(w/15)));
+      points = Array.from({length: amount}, (_,i)=>({
+        x: rand(0,w), y: rand(0,h), ox: rand(-.22,.22), oy: rand(-.2,.2),
+        r: rand(1.1,2.8), phase: rand(0,Math.PI*2), speed: rand(.25,.8),
+        hue: Math.random() < .72 ? 252 : 171
+      }));
+      if (reduceMotion) draw(0, true);
+    }
+    function glowLine(x1,y1,x2,y2,alpha,hue=253,width=1){
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+      ctx.strokeStyle = `hsla(${hue}, 95%, 70%, ${alpha})`; ctx.lineWidth=width; ctx.stroke();
+    }
+    function draw(time, staticFrame=false){
+      if (!ctx) return;
+      const t = (time || 0) * .00022;
+      ctx.clearRect(0,0,w,h);
+      // Wide flowing ribbons give the page a more cinematic animated background.
+      for (let band=0; band<3; band++){
+        const baseY = h*(.20 + band*.29);
+        ctx.beginPath();
+        for(let x=-30; x<=w+30; x+=18){
+          const y = baseY + Math.sin(x*.0042 + t*(1.15+band*.18) + band*1.9)* (h*(.045+band*.012)) + Math.cos(x*.008-t*1.4+band)*18;
+          if(x===-30) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        const grad=ctx.createLinearGradient(0,baseY-h*.1,w,baseY+h*.1);
+        grad.addColorStop(0,'rgba(124,92,255,0)'); grad.addColorStop(.28,`rgba(124,92,255,${staticFrame?.13:.17})`); grad.addColorStop(.63,`rgba(62,156,255,${staticFrame?.08:.12})`); grad.addColorStop(1,'rgba(32,211,162,0)');
+        ctx.strokeStyle=grad; ctx.lineWidth=band===1?1.6:1; ctx.stroke();
+      }
+      points.forEach((p,i)=>{
+        const x = p.x + Math.sin(t*7*p.speed+p.phase)*18 + p.ox*w*.1;
+        const y = p.y + Math.cos(t*6*p.speed+p.phase)*15 + p.oy*h*.1;
+        p._x=x; p._y=y;
+        // Connect to a few nearby particles to create an animated digital network.
+        for(let j=i+1;j<points.length;j++){
+          const q=points[j];
+          const qx=q.x+Math.sin(t*7*q.speed+q.phase)*18+q.ox*w*.1;
+          const qy=q.y+Math.cos(t*6*q.speed+q.phase)*15+q.oy*h*.1;
+          const dx=x-qx,dy=y-qy,dist=Math.hypot(dx,dy);
+          const maxDist = Math.min(150, w*.14);
+          if(dist<maxDist){
+            const alpha=(1-dist/maxDist)* (staticFrame?.12:.22);
+            glowLine(x,y,qx,qy,alpha,(p.hue+q.hue)/2,.7);
+          }
+        }
+        const pulse = staticFrame ? 1 : .72 + .28*Math.sin(t*18+p.phase);
+        ctx.beginPath(); ctx.arc(x,y,p.r*pulse,0,Math.PI*2);
+        ctx.fillStyle=`hsla(${p.hue}, 100%, ${p.hue===171?70:76}%, ${staticFrame?.4:.74})`;
+        ctx.shadowBlur=staticFrame?5:12; ctx.shadowColor=p.hue===171?'rgba(32,211,162,.9)':'rgba(124,92,255,.95)'; ctx.fill();
+      });
+      ctx.shadowBlur=0;
+      // Cursor creates a small energy halo and draws nearby links.
+      if(!coarse && pointer.x>-100){
+        const halo=ctx.createRadialGradient(pointer.x,pointer.y,0,pointer.x,pointer.y,150);
+        halo.addColorStop(0,'rgba(124,92,255,.16)'); halo.addColorStop(1,'rgba(124,92,255,0)');
+        ctx.fillStyle=halo; ctx.fillRect(pointer.x-150,pointer.y-150,300,300);
+        points.forEach(p=>{ const dx=p._x-pointer.x,dy=p._y-pointer.y,dist=Math.hypot(dx,dy); if(dist<180) glowLine(pointer.x,pointer.y,p._x,p._y,(1-dist/180)*.32,p.hue,1); });
+      }
+      if(!staticFrame){ frame++; raf = window.requestAnimationFrame(draw); }
+    }
+    window.addEventListener('pointermove',e=>{pointer.x=e.clientX;pointer.y=e.clientY;},{passive:true});
+    document.documentElement.addEventListener('pointerleave',()=>{pointer.x=-1000;pointer.y=-1000;},{passive:true});
+    window.addEventListener('resize', resize, {passive:true});
+    resize();
+    if(!reduceMotion){ raf=window.requestAnimationFrame(draw); }
+    // Avoid spending frames while the tab is hidden.
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden && raf) { window.cancelAnimationFrame(raf); raf=0; }
+      else if(!document.hidden && !reduceMotion && !raf) raf=window.requestAnimationFrame(draw);
+    });
+  }
+
   function handleSubmit(e){
     e.preventDefault();
     const data = new FormData(e.currentTarget);

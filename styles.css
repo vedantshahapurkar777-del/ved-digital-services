@@ -357,3 +357,39 @@ body {
   .dashboard-window { transform: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* VISIBLE MOTION GRAPHICS UPDATE — brighter motion, still legible over content */
+.ambient-scene { background: radial-gradient(ellipse at 10% 10%, rgba(124,92,255,.20), transparent 42%), radial-gradient(ellipse at 88% 52%, rgba(32,211,162,.11), transparent 40%), #080b15; }
+.motion-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; opacity:.92; pointer-events:none; }
+.ambient-grid { opacity:.27; background-size:58px 58px; animation-duration:22s; }
+.ambient-orb { opacity:.62; filter:blur(1px); }
+.orb-one { background:radial-gradient(circle at 36% 35%,rgba(124,92,255,.36),rgba(70,91,232,.16) 38%,transparent 71%); animation-duration:17s; }
+.orb-two { background:radial-gradient(circle at 44% 44%,rgba(32,211,162,.22),rgba(76,99,230,.13) 42%,transparent 72%); animation-duration:21s; }
+.orb-three { background:radial-gradient(circle,rgba(88,126,255,.24),rgba(124,92,255,.09) 45%,transparent 72%); animation-duration:16s; }
+.ambient-streak { opacity:.36; height:2px; filter:blur(.25px); }
+.streak-one { animation-duration:12s; }
+.streak-two { opacity:.24; animation-duration:16s; }
+.hero-visual { isolation:isolate; }
+.hero-visual::before, .hero-visual::after { content:""; position:absolute; pointer-events:none; z-index:-1; border-radius:50%; border:1px solid rgba(151,133,255,.52); box-shadow:0 0 18px rgba(124,92,255,.15), inset 0 0 18px rgba(124,92,255,.08); }
+.hero-visual::before { width:108%; height:72%; left:-5%; top:10%; transform:rotate(-24deg); animation:orbitRing 15s linear infinite; }
+.hero-visual::after { width:95%; height:83%; left:2%; top:5%; border-color:rgba(32,211,162,.28); transform:rotate(36deg); animation:orbitRingReverse 19s linear infinite; }
+.dashboard-window { animation: dashboardBreathe 6s ease-in-out infinite; }
+.mock-phone { animation: phoneDepth 8s ease-in-out infinite; }
+.fake-qr { position:relative; overflow:hidden; }
+.fake-qr::after { content:""; position:absolute; left:-30%; right:-30%; top:-18%; height:18%; background:linear-gradient(90deg,transparent,rgba(124,92,255,.95),rgba(32,211,162,.7),transparent); box-shadow:0 0 20px rgba(124,92,255,.75); animation:qrScan 2.6s ease-in-out infinite; }
+.site-lines i { transform-origin:left; animation:linePulse 3s ease-in-out infinite alternate; }
+.site-lines i:nth-child(2){animation-delay:.3s}.site-lines i:nth-child(3){animation-delay:.6s}.site-lines i:nth-child(4){animation-delay:.9s}
+.status .dot { animation: statusPulse 1.8s ease-in-out infinite; }
+.btn-primary { box-shadow:0 0 24px rgba(124,92,255,.22),0 15px 40px rgba(124,92,255,.22); }
+.service-card, .price-card, .maintenance-card, .benefit-card, .step, .portfolio-card, .about-panel, .contact-form { transform: perspective(1200px) rotateX(var(--card-tilt-x,0deg)) rotateY(var(--card-tilt-y,0deg)); will-change:transform; }
+.service-card:hover, .price-card:hover, .maintenance-card:hover, .benefit-card:hover, .step:hover, .portfolio-card:hover, .about-panel:hover, .contact-form:hover { transform:perspective(1200px) rotateX(var(--card-tilt-x,0deg)) rotateY(var(--card-tilt-y,0deg)) translateY(-7px) scale(1.012); }
+@keyframes orbitRing { 0%{rotate:0deg;scale:.98} 50%{scale:1.025} 100%{rotate:360deg;scale:.98} }
+@keyframes orbitRingReverse { 0%{rotate:360deg;scale:1.03} 50%{scale:.97} 100%{rotate:0deg;scale:1.03} }
+@keyframes dashboardBreathe { 0%,100%{box-shadow:0 30px 90px rgba(0,0,0,.35),0 0 42px rgba(124,92,255,.12)} 50%{box-shadow:0 34px 100px rgba(0,0,0,.4),0 0 82px rgba(124,92,255,.25)} }
+@keyframes phoneDepth { 0%,100%{translate:0 0} 50%{translate:0 -7px} }
+@keyframes qrScan { 0%{top:-20%;opacity:0} 20%{opacity:1} 80%{opacity:.8} 100%{top:110%;opacity:0} }
+@keyframes linePulse { 0%{opacity:.5;scale:1 1} 100%{opacity:1;scale:1.02 1} }
+@keyframes statusPulse { 0%,100%{box-shadow:0 0 0 4px rgba(32,211,162,.08),0 0 4px rgba(32,211,162,.1)} 50%{box-shadow:0 0 0 8px rgba(32,211,162,.03),0 0 15px rgba(32,211,162,.8)} }
+@media(max-width:760px){ .hero-visual::before,.hero-visual::after{width:100%;height:70%;left:0;top:12%;opacity:.55}.motion-canvas{opacity:.62}.ambient-grid{opacity:.14}.ambient-orb{opacity:.32}.dashboard-window{animation-duration:8s} }
+@media(pointer:coarse){ .service-card,.price-card,.maintenance-card,.benefit-card,.step,.portfolio-card,.about-panel,.contact-form{will-change:auto} }
+@media(prefers-reduced-motion:reduce){ .motion-canvas{opacity:.3}.hero-visual::before,.hero-visual::after,.dashboard-window,.mock-phone,.fake-qr::after,.site-lines i,.status .dot{animation:none!important}.service-card,.price-card,.maintenance-card,.benefit-card,.step,.portfolio-card,.about-panel,.contact-form{transform:none!important;will-change:auto} }

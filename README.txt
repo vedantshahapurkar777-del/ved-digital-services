@@ -47,3 +47,14 @@ The site now includes a subtle animated aurora/grid background, floating hero mo
 PUBLISHING UPDATED FILES
 -----------------------
 Upload index.html, styles.css, config.js, script.js and README.txt to the same folder in your GitHub Pages repository. Confirm replacement of same-named files, then commit the changes. Keep any other assets/folders already in the repository.
+
+
+MOTION GRAPHICS UPDATE
+----------------------
+This build includes an animated canvas particle/network field, moving neon wave lines,
+animated hero orbit rings, a moving QR scan highlight, card tilt/light interactions,
+and floating dashboard elements. The animation is coded directly in CSS and JavaScript;
+no third-party animation library is required.
+
+To publish: upload the five files in this folder to the same folder in your existing
+GitHub repository and commit the changes. Keep any unrelated assets/folders in the repository.
