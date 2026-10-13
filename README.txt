@@ -1,61 +1,67 @@
-VED DIGITAL SERVICES — LOW-JANK CINEMATIC SELECTOR EDITION
-=====================================================
+DIGITAL SERVICES AGENCY WEBSITE
+===============================
 
-FILES TO UPLOAD
----------------
-index.html       Main website and script references
-styles.css       Existing design plus lightweight selector styling
-config.js        Business contact information, service prices and scope
-script.js        Menus, forms, service selection and static ambient canvas
-README.txt       These instructions
+Files
+-----
+index.html     Main website
+styles.css     Design and responsive layout
+script.js      Dynamic rendering and interactions
+config.js      CENTRAL CUSTOMIZATION FILE — edit this first
 
-WHAT IS ADDED
--------------
-- CSS-based service selector illustrations and one-time static ambient canvas.
-- One-time GSAP entrance animation for the three-service selector; IntersectionObserver reveals for lower sections.
-- Hover/click transitions remain; continuous decorative animation loops are disabled for smoother scrolling.
-- Mobile-aware sizing and reduced-motion handling.
-- No continuous Three.js/WebGL or particle RAF loops are started.
-- Existing services, prices and contact details are preserved from the supplied ZIP.
+Quick customization
+--------------------
+1. Open config.js.
+2. Replace:
+   The business contact details in config.js are already set for Ved Digital Services. Check them before publishing.
+3. Update service prices/features, maintenance plans, portfolio projects, FAQ, colors, etc.
+4. Save all four files.
+5. Upload them to your hosting provider. index.html must be in the website root.
 
-EXTERNAL LIBRARIES
-------------------
-GSAP is loaded from a pinned jsDelivr CDN URL for the small service-selector entrance/selection transitions. Lower section reveals use native IntersectionObserver. The visual mockups are CSS-based, so the page does not need Three.js/WebGL.
-
-HOW TO PUBLISH TO GITHUB PAGES
-------------------------------
-1. Download this ZIP and extract it.
-2. Open the existing GitHub repository for Ved Digital Services.
-3. Choose Add file -> Upload files.
-4. Upload these five files to the SAME folder as the existing index.html:
-   index.html, styles.css, config.js, script.js, README.txt
-5. Confirm replacement of files with the same names. Do NOT delete unrelated assets or folders.
-6. Commit the changes and wait for the latest Pages build/deployment workflow to show a green check.
-7. Open the live website and hard-refresh (Ctrl+Shift+R).
-
-IMPORTANT
+Important
 ---------
-GitHub Pages publishes static website files. This animation update does not itself add a backend, live order database, private dashboard or automatic payment verification. Those features still need a backend/payment integration.
-
-NEW: CINEMATIC THREE-OPTION SERVICE SELECTOR
---------------------------------
-The homepage now begins with a cinematic, dark product-stage selector with three selectable service experiences. The first-screen artwork uses CSS-built mockups; GSAP animates the entrance and selected-service transition, with CSS/reduced-motion fallback:
-1. Digital Menu
-2. Business Website
-3. NFC Tap Card
-
-Selecting a service animates the other options away and transitions into a focused package view with configured prices, features, exclusions and care-plan information. Use the “All services” control to return to the selector. Actual rates are maintained in config.js.
-The NFC chooser clearly distinguishes one-time programming from physical card,
-printing/delivery costs and explains that the listed website/menu care plans
-cover digital assets rather than the physical NFC card itself.
-
-The page uses self-contained CSS product mockups for the three choices; no extra image files are required for the selector. The longer page uses one-time IntersectionObserver section reveals. GSAP loads from jsDelivr for the selector intro and click transitions; reduced-motion preference is respected.
+- The quote form uses mailto, so the visitor's email app opens with the enquiry pre-filled. For automatic form storage, connect a real form backend later.
+- The portfolio cards are explicitly sample/demo concepts. Replace them with real completed projects.
+- No fake testimonials, client counts, awards or company claims are included.
+- NFC card setup prices do not include the physical NFC card or printing unless a quote explicitly says so.
+- UPI QR display is not automatic payment verification. A real payment gateway/status integration needs a suitable provider/backend and should use the business owner's own payment account.
+- Social and Google Business profiles should remain owned by the client; do not collect or retain client passwords.
+- GitHub Pages publishes static files. Use a suitable backend/hosting platform for real database-backed ordering, private owner dashboards or automatic payment verification.
 
 
-PERFORMANCE OPTIMIZATIONS (CURRENT BUILD)
-----------------------------------------
-- The decorative full-screen canvas draws one static frame; it has no animation-frame loop.
-- The secondary Three.js/WebGL scene is no longer auto-loaded, avoiding continuous GPU rendering.
-- The three service chooser keeps its entry/selection transitions and product artwork, while decorative orbit/pulse/background loops are disabled.
-- ScrollTrigger is not loaded, reducing a second animation library download; service reveals fall back to IntersectionObserver.
-- Backdrop blur, animated shadow work, excess particles and permanent GPU layer promotion are reduced.
+PRICING AND SCOPE (UPDATED)
+---------------------------
+The service cards now show starting prices, what is included, and what is excluded. Scope limits are important: menu packages assume client-provided content/photos and up to 30 items unless the quote says otherwise.
+
+The WhatsApp ordering package sends order requests through WhatsApp. A database, live owner dashboard, automatic order status and payment gateway require a separately scoped custom build. Displaying a UPI QR does not automatically verify a payment.
+
+Physical NFC cards/printing, paid domains/hosting, and third-party/payment-provider charges are extra unless a quote explicitly includes them. Google/Meta approvals, search rankings and customer reviews cannot be guaranteed.
+
+MAINTENANCE PLANS
+-----------------
+Every maintenance plan has a defined number of update requests and menu-item edits per month. New features, major redesigns, paid platform fees and custom backend work are excluded unless separately quoted. Annual prices are shown on the page.
+
+ANIMATED VISUAL DESIGN
+----------------------
+The site now includes a subtle animated aurora/grid background, floating hero mockup, cursor-reactive card lighting, hover depth, scroll progress, and reveal-on-scroll effects. The animations use CSS and lightweight JavaScript with no added animation library. Motion-sensitive settings are respected through prefers-reduced-motion, and the motion is reduced on touch/mobile devices.
+
+
+NFC SMART LOYALTY CARD (NEW)
+---------------------------
+The website now lists NFC Smart Loyalty Card at ₹2,999 setup + ₹599/month maintenance, including a dedicated feature showcase, the service/pricing cards, a maintenance plan and FAQ entries. It explains that a customer's NFC tap or QR scan opens the café's loyalty page.
+
+Important: the stamp-card panel shown on the website is an illustrative visual demo, not a live loyalty application. Before selling or launching it for a café, build and test a real customer page, secure owner login, and backend/database for stamp records. Confirm any recurring hosting/database/provider fees with the customer in writing. Do not connect rewards to Google reviews.
+
+PUBLISHING UPDATED FILES
+-----------------------
+Upload index.html, styles.css, config.js, script.js and README.txt to the same folder in your GitHub Pages repository. Confirm replacement of same-named files, then commit the changes. Keep any other assets/folders already in the repository.
+
+
+MOTION GRAPHICS UPDATE
+----------------------
+This build includes an animated canvas particle/network field, moving neon wave lines,
+animated hero orbit rings, a moving QR scan highlight, card tilt/light interactions,
+and floating dashboard elements. The animation is coded directly in CSS and JavaScript;
+no third-party animation library is required.
+
+To publish: upload the five files in this folder to the same folder in your existing
+GitHub repository and commit the changes. Keep any unrelated assets/folders in the repository.

@@ -1,0 +1,12 @@
+VED DIGITAL SERVICES — NFC SMART LOYALTY UPDATE
+
+Updated in this package:
+- Added a dedicated NFC Smart Loyalty Card showcase section to the home page.
+- Added the service to both the service grid and pricing grid.
+- Added the agreed price: ₹2,999 setup + ₹599/month maintenance.
+- Added an NFC Loyalty Care plan at ₹599/month.
+- Added FAQs clarifying the NFC/QR flow and that real stamps require a secure backend/database.
+- Updated the navigation, footer link, and meta description.
+- Added mobile responsive styling and reduced-motion support for the demo visual.
+
+Important: This is a static website update and illustrative card mockup. It does not yet implement real customer accounts, secure stamps, or the live owner dashboard. Those require a backend/database and testing before being offered as a live loyalty system.
