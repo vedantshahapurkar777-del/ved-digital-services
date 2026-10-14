@@ -33,6 +33,15 @@ const SITE_CONFIG = {
       note: "The business website must already be live. Physical card supply is quoted separately."
     },
     {
+      id: "nfc-smart-loyalty",
+      name: "NFC Smart Loyalty Card",
+      price: "₹2,999 setup + ₹599/month",
+      short: "A digital loyalty and stamp-card experience customers can open by tapping an NFC card or scanning a QR code.",
+      features: ["Branded digital loyalty-card page for one business", "NFC tap and QR-code entry points", "Reward/stamp rules agreed with the business", "Owner-facing loyalty management view within the agreed scope", "Setup, testing and handover"],
+      exclusions: ["Physical NFC cards, printing and delivery unless quoted", "Payment processing or guaranteed repeat visits", "Secure multi-device live stamp syncing until backend/database integration is implemented", "Third-party hosting or provider fees unless quoted"],
+      note: "₹2,999 setup + ₹599/month maintenance. A real live stamp system requires a secure backend/database; a static GitHub Pages demo alone cannot securely store shared customer stamps."
+    },
+    {
       id: "nfc-review-card",
       name: "NFC Google Review Card Setup",
       price: "₹799 setup",
@@ -40,26 +49,6 @@ const SITE_CONFIG = {
       features: ["Find or prepare the business’s available review link", "Program one NFC card/tag with that review URL", "Test tap-to-open behaviour", "Provide a QR version of the link when requested"],
       exclusions: ["Physical card/stand, printing and delivery", "Google Business Profile verification or approval", "Guaranteed reviews, ratings or ranking"],
       note: "The client should request honest reviews and must not offer rewards in exchange for reviews."
-    },
-    {
-      id: "nfc-smart-loyalty",
-      name: "NFC Smart Loyalty Card",
-      price: "₹2,999 setup + ₹599/month",
-      short: "A branded digital stamp and rewards card for a café. Customers tap an NFC card or scan a QR code to open their loyalty page and collect stamps toward a reward.",
-      features: [
-        "Branded digital loyalty page for one café/business location",
-        "NFC tap and QR code open the same loyalty page",
-        "One basic stamp/reward rule, such as 5 eligible stamps for a free coffee",
-        "Basic owner dashboard to manage stamps and reward status within the agreed scope",
-        "Mobile-friendly layout and launch/testing support"
-      ],
-      exclusions: [
-        "Physical NFC card/stand, printing, and delivery",
-        "Paid domain, hosting, database, or third-party platform fees unless included in a written quote",
-        "Multiple locations, POS integrations, advanced analytics, automated messaging, or other custom features",
-        "Unlimited changes or migration from another loyalty system"
-      ],
-      note: "Customer stamps must be stored in a connected backend/database with protected owner access. Third-party running costs will be confirmed before launch. Rewards must not be conditional on Google reviews."
     },
     {
       id: "google-business-review",
@@ -154,23 +143,6 @@ const SITE_CONFIG = {
   ],
   maintenance: [
     {
-      name: "NFC Loyalty Care",
-      monthly: "₹599/month",
-      yearly: "",
-      features: [
-        "Basic technical checks of the existing loyalty page and customer flow",
-        "Up to 2 small offer/reward-rule or text updates per month",
-        "Routine help with the existing owner dashboard",
-        "Bug fixes for features included in the agreed starter scope"
-      ],
-      exclusions: [
-        "Physical NFC cards, printing, replacement, or delivery",
-        "Paid hosting/database/provider fees unless explicitly included",
-        "New features, additional locations, POS integrations, or major redesigns",
-        "Third-party outages and data recovery beyond available backups"
-      ]
-    },
-    {
       name: "Essential Website Care",
       monthly: "₹499/month",
       yearly: "₹4,999/year",
@@ -192,7 +164,7 @@ const SITE_CONFIG = {
       exclusions: ["New features, new integrations or major redesigns", "Payment gateway fees, paid hosting/domain or other third-party charges", "Social media posting/advertising or content production", "Custom backend work, provider outages or major rebuilds; quoted separately"]
     }
   ],
-  benefits: ["Professional Design", "Mobile-Friendly Website", "NFC Tap Cards", "NFC Smart Loyalty Rewards", "QR Code", "Digital Menu", "Google Review Link", "Instagram & Facebook Links", "WhatsApp Direct Chat", "WhatsApp-Based Ordering", "Payment Options", "Live Owner Dashboard (custom quote where needed)", "Hosting Setup", "Custom Branding", "Defined Menu Updates", "Technical Support"],
+  benefits: ["Professional Design", "Mobile-Friendly Website", "NFC Tap Cards", "QR Code", "Digital Menu", "Google Review Link", "Instagram & Facebook Links", "WhatsApp Direct Chat", "WhatsApp-Based Ordering", "Payment Options", "Live Owner Dashboard (custom quote where needed)", "Hosting Setup", "Custom Branding", "Defined Menu Updates", "Technical Support"],
   steps: [
     { title: "Contact Us", text: "Client contacts us through WhatsApp, phone or email." },
     { title: "Share Your Requirements", text: "Client shares their menu, logo, business information, photos and required features." },
@@ -208,8 +180,6 @@ const SITE_CONFIG = {
   ],
   faq: [
     { q: "What does the NFC website card do?", a: "We program one NFC card/tag to open a business’s existing live website when tapped on a compatible phone. Physical card and printing costs are separate unless quoted." },
-    { q: "What is the NFC Smart Loyalty Card?", a: "It is a branded digital stamp-and-rewards page that opens when a customer taps an NFC card or scans a QR code. The listed starter price is ₹2,999 setup plus ₹599/month maintenance. Secure customer stamp records and owner access need a connected backend/database; any external running costs are confirmed before launch." },
-    { q: "Are the loyalty stamps already live on this website?", a: "No. This website lists the service and its package. A separate customer-facing loyalty app, secure database, and owner login must be configured and tested before a café can use real customer stamps." },
     { q: "Does the NFC Google Review card open the website?", a: "The separate Google Review NFC card opens the business’s Google review link directly. An all-in-one NFC card can open a website that contains reviews, Instagram, Facebook, WhatsApp, menu and other links." },
     { q: "What is included in the digital QR menu price?", a: "The starting package includes one branded menu page for up to 30 items, using details and photos supplied by the client, a QR code file and one round of corrections. Extra items and later updates may cost extra." },
     { q: "Can customers order from the menu?", a: "The entry ordering package sends an order request to the business using WhatsApp. A live database, automatic order statuses and an owner dashboard require a separate custom build." },
