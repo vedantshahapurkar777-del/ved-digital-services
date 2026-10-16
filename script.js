@@ -57,12 +57,16 @@
     const title = kind === 'excluded' ? 'Not included' : 'Included';
     return `<div class="scope-block ${kind}"><h4>${title}</h4><ul class="feature-list ${kind}-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   }
+  function addOnBlock(service){
+    if(!service.addOns || !service.addOns.length) return '';
+    return `<div class="add-on-block"><div class="add-on-label">OPTIONAL ADD-ON</div><ul>${service.addOns.map(item=>`<li>${esc(item)}</li>`).join('')}</ul></div>`;
+  }
   function renderServices(){
     $('#serviceGrid').innerHTML = cfg.services.map((s,i)=>`
       <article class="service-card reveal">
         <div class="card-top"><div class="service-icon">${['▦','🛎','₹','⌂','▥','✦'][i%6]}</div><span class="eyebrow">${String(i+1).padStart(2,'0')}</span></div>
         <h3>${esc(s.name)}</h3><p>${esc(s.short)}</p>
-        <div class="price">${esc(s.price)}</div>${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}
+        <div class="price">${esc(s.price)}</div>${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}${addOnBlock(s)}
         ${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
         <div class="card-actions"><a class="btn btn-secondary btn-wide service-cta" href="#contact" data-service="${esc(s.name)}">Get This Service</a></div>
       </article>`).join('');
@@ -72,7 +76,7 @@
       <article class="price-card reveal">
         <div class="card-top"><span class="eyebrow">Package ${String(i+1).padStart(2,'0')}</span><span class="service-icon">${i===0?'▦':i===1?'🛎':i===2?'₹':i===3?'⌂':i===4?'▥':'✦'}</span></div>
         <h3>${esc(s.name)}</h3><p>${esc(s.short)}</p><div class="price">${esc(s.price)}</div>
-        ${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
+        ${featureList(s.features, 'included')}${featureList(s.exclusions, 'excluded')}${addOnBlock(s)}${s.note ? `<div class="note">${esc(s.note)}</div>` : ''}
         <div class="card-actions"><a class="btn btn-primary btn-wide service-cta" href="#contact" data-service="${esc(s.name)}">Get This Service</a></div>
       </article>`).join('');
   }
@@ -118,7 +122,7 @@
       accent: '#3edcc5',
       intro: 'Choose a tap-card setup for a website link or a Google review link. Setup prices are shown separately from the physical card, printing and delivery.',
       ids: ['nfc-website-card','nfc-review-card','nfc-smart-loyalty'],
-      note: 'NFC setup prices are shown separately from physical card, printing and delivery. Smart Loyalty is listed at ₹2,999 setup + ₹599/month. Live shared stamp tracking requires a secure backend/database; a static demo is not production authentication or storage.'
+      note: 'Custom business logo printing is available for +₹100 per physical NFC card. Physical card and delivery costs are separate. Smart Loyalty is ₹2,999 setup + ₹599/month; live shared stamp tracking requires a secure backend/database.'
     }
   };
   let gatewayAnimating = false;
@@ -134,6 +138,7 @@
         <div class="price">${esc(service.price)}</div>
         ${featureList(service.features, 'included')}
         ${featureList(service.exclusions, 'excluded')}
+        ${addOnBlock(service)}
         ${service.note ? `<div class="note">${esc(service.note)}</div>` : ''}
         <div class="card-actions"><a class="btn btn-primary btn-wide service-cta" href="#contact" data-service="${esc(service.name)}">Get a Quote</a></div>
       </article>`).join('');

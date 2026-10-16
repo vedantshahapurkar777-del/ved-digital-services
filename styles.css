@@ -834,63 +834,7 @@ html.gsap-motion-active .hero-copy > *, html.gsap-motion-active .hero-visual .da
 .orbit-a, .orbit-b, .signal-one, .signal-two { animation: none !important; }
 
 
-/* Premium redesign — ONLY the hero's Client Digital Suite mockup */
-.hero-visual .dashboard-window {
-  border: 1px solid rgba(104, 143, 255, .34);
-  border-radius: 30px;
-  padding: 14px;
-  background: linear-gradient(145deg, rgba(14, 23, 45, .97), rgba(7, 12, 26, .96));
-  box-shadow: 0 28px 90px rgba(0,0,0,.42), 0 0 0 1px rgba(255,255,255,.025) inset, 0 0 55px rgba(40, 104, 255, .12);
-  backdrop-filter: blur(18px);
-  transform: perspective(1200px) rotateY(-2deg);
-  transition: transform .45s ease, box-shadow .45s ease;
-}
-.hero-visual .dashboard-window:hover {
-  transform: perspective(1200px) rotateY(0) translateY(-3px);
-  box-shadow: 0 34px 100px rgba(0,0,0,.48), 0 0 70px rgba(40,104,255,.18);
-}
-.hero-visual .window-top {
-  padding: 7px 8px 15px;
-  color: #9eaccb;
-  letter-spacing: .025em;
-}
-.hero-visual .window-top span { background: linear-gradient(135deg,#64748b,#9aa8c7); box-shadow: 0 0 10px rgba(120,150,210,.18); }
-.hero-visual .window-top b { color: #e3eaff; font-size: .78rem; letter-spacing: .025em; }
-.hero-visual .mock-grid { gap: 14px; }
-.hero-visual .card-surface {
-  background: linear-gradient(150deg, rgba(34, 45, 70, .92), rgba(16, 23, 40, .94));
-  border: 1px solid rgba(160, 183, 235, .13);
-  border-radius: 23px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.035);
-}
-.hero-visual .mock-phone { padding: 21px; min-height: 450px; }
-.hero-visual .phone-notch { background: #030713; box-shadow: 0 0 0 1px rgba(255,255,255,.06); }
-.hero-visual .mock-logo { border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-.hero-visual .mock-phone h4 { font-family: Manrope, Inter, sans-serif; font-size: 1.22rem; letter-spacing: -.035em; }
-.hero-visual .mock-phone > p { color: #a7b4d0; }
-.hero-visual .mock-pill { color: #d6d7ff; background: linear-gradient(135deg,rgba(100,87,255,.25),rgba(39,145,255,.12)); border: 1px solid rgba(130,132,255,.14); }
-.hero-visual .mock-item { border-bottom-color: rgba(170,190,230,.12); padding: 16px 0; }
-.hero-visual .mock-item b { color: #f5f7ff; }
-.hero-visual .mock-order {
-  margin-top: 20px; padding: 13px; border-radius: 13px; color: #fff;
-  background: linear-gradient(100deg,#168dff,#6555f5 72%,#8157ff);
-  box-shadow: 0 10px 26px rgba(52,103,255,.26); cursor: default;
-}
-.hero-visual .mock-side { gap: 14px; }
-.hero-visual .mini-card { padding: 18px; min-height: 140px; }
-.hero-visual .mini-label { color: #9aa9cb; letter-spacing: .15em; }
-.hero-visual .fake-qr { background: repeating-conic-gradient(#f8faff 0 25%, #151d31 0 50%) 50% / 12px 12px; border: 6px solid #f8faff; box-shadow: 0 8px 22px rgba(0,0,0,.2); }
-.hero-visual .mini-card small { color: #a9b5d0; }
-.hero-visual .order-line { color: #f1f5ff; }
-.hero-visual .order-line.muted { color: #9aa7c3; }
-.hero-visual .status { color: #dce8ff; }
-.hero-visual .dot { background: #37e4b1; box-shadow: 0 0 0 4px rgba(55,228,177,.12), 0 0 14px rgba(55,228,177,.28); }
-.hero-visual .site-lines i { background: linear-gradient(90deg,#7485a8,#52617f); }
-.hero-visual .glow { inset: 8% 0 0; background: radial-gradient(ellipse, rgba(35,111,255,.22), rgba(111,72,255,.10) 38%, transparent 70%); filter: blur(32px); }
-@media (max-width: 900px) {
-  .hero-visual .dashboard-window { transform: none; }
-  .hero-visual .dashboard-window:hover { transform: translateY(-2px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-visual .dashboard-window, .hero-visual .dashboard-window:hover { transition: none; transform: none; }
-}
+/* Premium optional add-on pricing callout */
+.add-on-block { margin-top:14px; padding:12px 13px; border:1px solid rgba(215,182,108,.38); border-radius:12px; background:linear-gradient(135deg,rgba(215,182,108,.11),rgba(124,92,255,.05)); }
+.add-on-label { color:#d7b66c; font-size:.65rem; font-weight:850; letter-spacing:.12em; margin-bottom:6px; }
+.add-on-block ul { margin:0; padding-left:17px; color:var(--text,#f4f5fb); font-size:.78rem; line-height:1.55; }

@@ -29,7 +29,8 @@ const SITE_CONFIG = {
       price: "₹699 setup",
       short: "A programmed NFC card that opens the business’s existing website when a customer taps it with a compatible phone.",
       features: ["Program one NFC card/tag with one live website URL", "Test the tap link on a compatible phone", "Provide the programmed destination URL", "Explain how customers can tap or use the QR backup if supplied"],
-      exclusions: ["Physical NFC card, printing and delivery", "Building a new website or buying a domain", "Bulk cards or multiple destination links"],
+      exclusions: ["Physical NFC card and delivery", "Building a new website or buying a domain", "Bulk cards or multiple destination links"],
+      addOns: ["Custom business logo printed on the physical NFC card: +₹100 per card (one-time). Physical card and delivery costs are separate."],
       note: "The business website must already be live. Physical card supply is quoted separately."
     },
     {
@@ -38,7 +39,8 @@ const SITE_CONFIG = {
       price: "₹2,999 setup + ₹599/month",
       short: "A digital loyalty and stamp-card experience customers can open by tapping an NFC card or scanning a QR code.",
       features: ["Branded digital loyalty-card page for one business", "NFC tap and QR-code entry points", "Reward/stamp rules agreed with the business", "Owner-facing loyalty management view within the agreed scope", "Setup, testing and handover"],
-      exclusions: ["Physical NFC cards, printing and delivery unless quoted", "Payment processing or guaranteed repeat visits", "Secure multi-device live stamp syncing until backend/database integration is implemented", "Third-party hosting or provider fees unless quoted"],
+      exclusions: ["Physical NFC cards and delivery unless quoted", "Payment processing or guaranteed repeat visits", "Secure multi-device live stamp syncing until backend/database integration is implemented", "Third-party hosting or provider fees unless quoted"],
+      addOns: ["Custom business logo printed on each physical NFC card: +₹100 per card (one-time). Physical card and delivery costs are separate."],
       note: "₹2,999 setup + ₹599/month maintenance. A real live stamp system requires a secure backend/database; a static GitHub Pages demo alone cannot securely store shared customer stamps."
     },
     {
@@ -47,7 +49,8 @@ const SITE_CONFIG = {
       price: "₹799 setup",
       short: "A dedicated NFC card programmed to open the business’s Google review page directly.",
       features: ["Find or prepare the business’s available review link", "Program one NFC card/tag with that review URL", "Test tap-to-open behaviour", "Provide a QR version of the link when requested"],
-      exclusions: ["Physical card/stand, printing and delivery", "Google Business Profile verification or approval", "Guaranteed reviews, ratings or ranking"],
+      exclusions: ["Physical NFC card/stand and delivery", "Google Business Profile verification or approval", "Guaranteed reviews, ratings or ranking"],
+      addOns: ["Custom business logo printed on the physical NFC card: +₹100 per card (one-time). Physical card and delivery costs are separate."],
       note: "The client should request honest reviews and must not offer rewards in exchange for reviews."
     },
     {

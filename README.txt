@@ -45,9 +45,10 @@ The homepage now begins with a cinematic, dark product-stage selector with three
 3. NFC Tap Card
 
 Selecting a service animates the other options away and transitions into a focused package view with configured prices, features, exclusions and care-plan information. Use the “All services” control to return to the selector. Actual rates are maintained in config.js.
-The NFC chooser clearly distinguishes one-time programming from physical card,
-printing/delivery costs and explains that the listed website/menu care plans
-cover digital assets rather than the physical NFC card itself.
+The NFC chooser clearly distinguishes one-time programming from physical card
+and delivery costs. Optional custom business-logo printing is listed at +₹100
+per physical NFC card (one-time). The listed website/menu care plans cover
+digital assets rather than the physical NFC card itself.
 
 The page uses self-contained CSS product mockups for the three choices; no extra image files are required for the selector. The longer page uses one-time IntersectionObserver section reveals. GSAP loads from jsDelivr for the selector intro and click transitions; reduced-motion preference is respected.
 
