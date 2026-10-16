@@ -10,8 +10,6 @@
   document.title = `${cfg.business.name} | ${cfg.business.tagline}`;
   $('#brandName').textContent = cfg.business.name;
   $('#footerBrandName').textContent = cfg.business.name;
-  $('#brandMark').textContent = initials(cfg.business.name);
-  $('#footerBrandMark').textContent = initials(cfg.business.name);
   $('#heroMessage').textContent = cfg.business.heroMessage;
   $('#emailText').textContent = cfg.business.email;
   $('#phoneText').textContent = cfg.business.phoneDisplay;

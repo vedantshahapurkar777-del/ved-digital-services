@@ -60,3 +60,11 @@ PERFORMANCE OPTIMIZATIONS (CURRENT BUILD)
 - The three service chooser keeps its entry/selection transitions and product artwork, while decorative orbit/pulse/background loops are disabled.
 - ScrollTrigger is not loaded, reducing a second animation library download; service reveals fall back to IntersectionObserver.
 - Backdrop blur, animated shadow work, excess particles and permanent GPU layer promotion are reduced.
+
+
+LOGO UPDATE
+------------
+This version uses the supplied Ved Digital Services logo in the website header and footer.
+Logo file: assets/ved-digital-services-logo.png
+To change the logo later, replace that image with the new logo using the same filename.
+This package also retains the NFC custom business-logo add-on priced at +₹100 per physical card (one-time); physical card and delivery are separate.
