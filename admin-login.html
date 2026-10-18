@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080b14" />
+  <title>Owner Login | Ved Digital Services</title>
+  <link rel="icon" type="image/png" href="ved-digital-services-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-glow" aria-hidden="true"></div>
+  <main class="auth-card">
+    <a class="auth-brand" href="index.html"><img src="ved-digital-services-logo.png" alt="Ved Digital Services logo" /><span>VED DIGITAL SERVICES<small>OWNER CONSOLE</small></span></a>
+    <div class="eyebrow">SECURE ADMIN ACCESS</div>
+    <h1>Welcome back.</h1>
+    <p class="subtext">Sign in with the existing Supabase Auth account assigned the admin role.</p>
+    <form id="loginForm">
+      <label>Email address<input id="email" name="email" type="email" autocomplete="username" required placeholder="you@example.com" /></label>
+      <label>Password<input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password" /></label>
+      <button class="button primary full" id="loginButton" type="submit">Sign in to dashboard <span aria-hidden="true">↗</span></button>
+    </form>
+    <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
+    <div class="auth-note"><span class="secure-dot"></span><span>Changes are protected by your Supabase login and database policies.</span></div>
+    <a class="back-link" href="index.html">← Back to public website</a>
+  </main>
+  <script defer src="supabase-config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="supabase-client.js"></script>
+  <script defer src="admin.js"></script>
+</body>
+</html>

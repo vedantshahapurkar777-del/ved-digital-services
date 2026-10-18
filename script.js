@@ -40,6 +40,7 @@
   renderFaq();
   populateServiceSelect();
   bindUi();
+  initSupabaseSiteContent();
 
   function initials(name){
     const clean = name.replace(/[^a-zA-Z0-9 ]/g,' ').trim().split(/\s+/).filter(Boolean);
@@ -88,8 +89,69 @@
   function renderSteps(){
     $('#steps').innerHTML = cfg.steps.map((s,i)=>`<article class="step reveal"><div class="step-number">STEP ${String(i+1).padStart(2,'0')}</div><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></article>`).join('');
   }
-  function renderPortfolio(){
-    $('#portfolioGrid').innerHTML = cfg.portfolio.map(p=>`<article class="portfolio-card reveal"><div class="portfolio-art">${p.icon || '✦'}</div><div class="portfolio-info"><small>${esc(p.type)}</small><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p><a class="text-link" href="#contact" data-service="Custom Requirement">View Demo →</a></div></article>`).join('');
+  function safeWebUrl(value){
+    if (!value) return '';
+    try {
+      const parsed = new URL(String(value), window.location.href);
+      return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+    } catch (_) { return ''; }
+  }
+  function renderPortfolio(items = cfg.portfolio){
+    const grid = $('#portfolioGrid');
+    if (!Array.isArray(items) || !items.length) {
+      grid.innerHTML = '<div class="portfolio-empty"><strong>New projects are on the way.</strong><span>Check back soon to see our latest digital work.</span></div>';
+      return;
+    }
+    grid.innerHTML = items.map(p=>{
+      const title = p.title || p.name || 'Untitled project';
+      const category = p.category || p.type || 'Project';
+      const description = p.description || '';
+      const imageUrl = safeWebUrl(p.image_url || p.imageUrl);
+      const demoUrl = safeWebUrl(p.demo_url || p.demoUrl);
+      const art = imageUrl
+        ? `<img class="portfolio-image" src="${esc(imageUrl)}" alt="${esc(title)} project preview" loading="lazy" />`
+        : esc(p.icon || '✦');
+      const action = demoUrl
+        ? `<a class="text-link" href="${esc(demoUrl)}" target="_blank" rel="noopener noreferrer">View Live Demo ↗</a>`
+        : `<a class="text-link" href="#contact" data-service="${esc(title)}">Ask about a similar project →</a>`;
+      return `<article class="portfolio-card reveal"><div class="portfolio-art${imageUrl ? ' has-image' : ''}">${art}</div><div class="portfolio-info"><small>${esc(category)}</small><h3>${esc(title)}</h3><p>${esc(description)}</p>${action}</div></article>`;
+    }).join('');
+  }
+  function applySiteLogo(value){
+    const url = safeWebUrl(value);
+    if (!url) return;
+    ['#brandMark', '#footerBrandMark'].forEach(selector=>{
+      const node = $(selector);
+      if (node) node.src = url;
+    });
+    const favicon = $('link[rel="icon"]');
+    if (favicon) favicon.href = url;
+  }
+  async function initSupabaseSiteContent(){
+    const client = window.vedSupabaseClient;
+    if (!client) return; // Keep the existing static portfolio if the publishable key has not been configured yet.
+    try {
+      const [projectsResult, logoResult] = await Promise.all([
+        client.from('portfolio_projects')
+          .select('id,title,category,description,image_url,demo_url,is_published,display_order,created_at')
+          .eq('is_published', true)
+          .order('display_order', { ascending: true })
+          .order('created_at', { ascending: false }),
+        client.from('site_settings')
+          .select('setting_value')
+          .eq('setting_key', 'brand_logo_url')
+          .eq('is_public', true)
+          .maybeSingle()
+      ]);
+      if (!projectsResult.error) {
+        renderPortfolio(projectsResult.data || []);
+        $$('#portfolioGrid .portfolio-card').forEach(card => card.classList.add('in'));
+      } else console.warn('Supabase portfolio could not load; leaving the existing portfolio in place.', projectsResult.error.message);
+      if (!logoResult.error && logoResult.data?.setting_value) applySiteLogo(logoResult.data.setting_value);
+      else if (logoResult.error) console.warn('Supabase logo setting could not load.', logoResult.error.message);
+    } catch (error) {
+      console.warn('Supabase site content is unavailable; using existing local content.', error);
+    }
   }
   function renderFaq(){
     $('#faqList').innerHTML = cfg.faq.map((f,i)=>`<article class="faq-item reveal"><button class="faq-q" type="button" aria-expanded="false"><span>${esc(f.q)}</span><span class="faq-plus">+</span></button><div class="faq-a"><p>${esc(f.a)}</p></div></article>`).join('');

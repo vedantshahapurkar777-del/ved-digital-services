@@ -1,0 +1,81 @@
+VED DIGITAL SERVICES — SUPABASE WEBSITE + ADMIN DASHBOARD
+========================================================
+
+WHAT IS INCLUDED
+----------------
+- Existing homepage design, services, rates, chooser, content and original local logo are preserved.
+- Published portfolio projects load from public.portfolio_projects when Supabase is configured.
+- Draft projects remain hidden from the public homepage.
+- Owner login uses Supabase Auth password sign-in and checks public.user_roles for role = admin.
+- dashboard.html supports add/edit/publish/hide/delete projects and uploads preview images to portfolio-assets.
+- Dashboard branding supports a custom logo upload saved in public.site_settings with setting_key = brand_logo_url.
+- The original local logo remains the fallback if no custom logo is configured.
+- Optional starter concepts are labelled as concepts and can be added from the dashboard.
+
+STEP 1 — ADD YOUR PUBLIC CLIENT KEY
+-----------------------------------
+1. Open supabase-config.js in a text editor.
+2. Keep the URL exactly as provided in that file.
+3. Replace PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE with the project's Publishable key.
+   Find it in Supabase Project Settings / API Keys. A legacy public anon JWT can also be used. The client
+   accepts the current sb_publishable_ format or a legacy JWT whose role claim is anon; it rejects service_role JWTs.
+4. This file is frontend code; the publishable/anon key is designed for browser use when RLS is configured.
+5. NEVER put a service_role key, secret key, database password, or other server credential into this file or any frontend file.
+
+STEP 2 — CHECK THE EXISTING SUPABASE SETUP
+------------------------------------------
+Expected items based on the project's current configuration:
+- public.portfolio_projects table with id, title, category, description, image_url, demo_url,
+  is_published, display_order, created_at and updated_at columns (other columns may remain).
+- public.site_settings with setting_key, setting_value, is_public and updated_at.
+- public.user_roles with user_id and role; the existing Auth user must have the admin role.
+- RLS enabled and existing admin-only INSERT/UPDATE/DELETE policies maintained.
+- Storage bucket portfolio-assets, public ON, max size 5 MB, PNG/JPEG/WebP allowed, and the existing
+  admin-only upload/update/delete/list policies maintained.
+- Data API enabled; public schema exposed; SELECT grants for anon/authenticated and authenticated write
+  grants as needed by the existing RLS policies.
+
+Do not rerun old schema/policy SQL blindly. This package does not create or reset the database tables.
+
+STEP 3 — UPLOAD FILES TO YOUR EXISTING GITHUB REPOSITORY
+-------------------------------------------------------
+1. Download and extract this ZIP.
+2. Open the root of the existing ved-digital-services GitHub repository.
+3. Add/replace these root files (keep existing image assets and all other repository files):
+   index.html, script.js, styles.css, supabase-config.js, supabase-client.js,
+   admin-login.html, dashboard.html, admin.css, admin.js.
+4. Keep config.js and ved-digital-services-logo.png in the same root folder as index.html.
+   If you are uploading the complete ZIP through a local Git client, confirm the files land in the repository root,
+   not inside an extra nested folder.
+5. Commit/push and wait for GitHub Pages to finish deploying.
+
+LIVE ROUTES AFTER DEPLOYMENT
+----------------------------
+Public site: https://vedantshahapurkar777-del.github.io/ved-digital-services/
+Admin login: https://vedantshahapurkar777-del.github.io/ved-digital-services/admin-login.html
+Dashboard:   https://vedantshahapurkar777-del.github.io/ved-digital-services/dashboard.html
+
+STEP 4 — TEST IN THIS ORDER
+---------------------------
+1. Open admin-login.html and sign in with the existing Supabase Auth email/password account.
+2. The page checks that the signed-in user has role = admin in public.user_roles before opening the dashboard.
+3. Add a test portfolio project with Published OFF, save it and verify it appears as a Draft in the dashboard
+   but does not appear on the public page.
+4. Turn Published ON and refresh the public homepage; the project should become visible.
+5. Upload a preview image and verify its URL is loaded on the public portfolio.
+6. Test logo upload, refresh the homepage, then test “Use original logo”.
+7. Test hiding and deleting a throwaway project.
+
+SECURITY AND LIMITATIONS
+------------------------
+- This is a static GitHub Pages frontend using the Supabase Publishable/anon key; row-level security is the access
+  boundary. Hiding UI controls is not security by itself.
+- The dashboard does not include a public account-registration flow. Use the existing authenticated admin account.
+- Admin role assignment is managed in Supabase; never give ordinary users INSERT/UPDATE access to public.user_roles.
+- The portfolio-assets bucket is public for image delivery. This means anyone with an uploaded image's URL may view
+  that image; do not upload private or sensitive files there.
+- Password reset flows are not included in this first package. Keep access to your Supabase Auth account secure.
+- GitHub Pages is static hosting. This dashboard manages the portfolio and site logo only; it is not a full CMS for
+  every section of the homepage and does not manage service pricing/contact details yet.
+- Test on the live deployment after publishing. A successful SQL policy listing alone does not guarantee that
+  browser-side Auth, Data API access and Storage uploads all work end-to-end.

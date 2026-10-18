@@ -1,12 +1,14 @@
-VED DIGITAL SERVICES — NFC SMART LOYALTY UPDATE
+VED DIGITAL SERVICES — SUPABASE PORTFOLIO / OWNER DASHBOARD UPDATE
 
-Updated in this package:
-- Added a dedicated NFC Smart Loyalty Card showcase section to the home page.
-- Added the service to both the service grid and pricing grid.
-- Added the agreed price: ₹2,999 setup + ₹599/month maintenance.
-- Added an NFC Loyalty Care plan at ₹599/month.
-- Added FAQs clarifying the NFC/QR flow and that real stamps require a secure backend/database.
-- Updated the navigation, footer link, and meta description.
-- Added mobile responsive styling and reduced-motion support for the demo visual.
+- Preserved the current homepage design, packages, contact information, chooser and existing local logo.
+- Added Supabase-backed loading for published portfolio projects; existing local demo cards remain as a fallback
+  until a valid public client key is configured or while the public API is unavailable.
+- Added an admin login page with Supabase Auth password sign-in and an explicit user_roles admin-role check.
+- Added a gated dashboard for adding, editing, publishing/hiding and deleting portfolio projects.
+- Added PNG/JPEG/WebP image uploads to the existing portfolio-assets storage bucket with 5 MB client-side limit.
+- Added custom header/footer/favicon logo management stored in public.site_settings under brand_logo_url.
+- Added optional starter concept import clearly labelling those rows as demo concepts.
+- Added SUPABASE-SETUP.txt with key setup, publishing and end-to-end testing instructions.
 
-Important: This is a static website update and illustrative card mockup. It does not yet implement real customer accounts, secure stamps, or the live owner dashboard. Those require a backend/database and testing before being offered as a live loyalty system.
+The package has not been published to GitHub. The owner must set the public Publishable/anon key in
+supabase-config.js and deploy the changed files from the repository root.

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080b14" />
+  <title>Owner Dashboard | Ved Digital Services</title>
+  <link rel="icon" type="image/png" href="ved-digital-services-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="dashboard-page">
+  <header class="dash-topbar">
+    <a class="dash-brand" href="index.html"><img id="dashLogo" src="ved-digital-services-logo.png" alt="Ved Digital Services logo" /><span>VED DIGITAL SERVICES<small>OWNER CONSOLE</small></span></a>
+    <div class="top-actions"><a class="button secondary compact" href="index.html#portfolio" target="_blank" rel="noopener">View live site ↗</a><span class="user-email" id="adminEmail">Checking session…</span><button class="button ghost compact" id="signOutButton" type="button">Sign out</button></div>
+  </header>
+  <main class="dash-wrap">
+    <div class="dash-heading"><div><div class="eyebrow">ADMIN WORKSPACE</div><h1>Manage your work.</h1><p>Publish portfolio projects and update the site logo without editing the homepage code.</p></div><span class="access-chip"><i></i> Admin protected</span></div>
+    <div class="notice" id="globalNotice" role="status" aria-live="polite" hidden></div>
+    <div class="dash-layout" id="dashboardApp" hidden>
+      <aside class="dash-sidebar" aria-label="Dashboard sections">
+        <button class="side-tab active" type="button" data-tab="overview"><span>▦</span> Overview</button>
+        <button class="side-tab" type="button" data-tab="projects"><span>◫</span> Portfolio projects</button>
+        <button class="side-tab" type="button" data-tab="branding"><span>✦</span> Website branding</button>
+        <div class="sidebar-foot"><span class="secure-dot"></span> Database-protected actions</div>
+      </aside>
+      <div class="dash-content">
+        <section class="dash-panel" id="overviewPanel">
+          <div class="panel-heading"><div><div class="eyebrow">QUICK OVERVIEW</div><h2>Your portfolio at a glance</h2><p>Only projects marked Published appear on the public homepage.</p></div><button class="button primary" type="button" data-open-new-project>＋ Add project</button></div>
+          <div class="stats-grid"><article class="stat-card"><span>Total projects</span><strong id="totalCount">—</strong><small>Saved in Supabase</small></article><article class="stat-card"><span>Published</span><strong id="publishedCount">—</strong><small>Visible on your website</small></article><article class="stat-card"><span>Drafts</span><strong id="draftCount">—</strong><small>Hidden from public</small></article></div>
+          <div class="guide-card"><div class="guide-icon">✦</div><div><h3>Keep your work up to date</h3><p>Add a clear title, a short description and (optionally) a preview image and live demo link. Use drafts to prepare projects before publishing.</p><button class="text-button" type="button" data-tab="projects">Manage projects →</button></div></div>
+          <div class="panel-heading subheading"><div><h2>Starter concepts</h2><p>Optional demo concepts that are clearly labelled as examples—not claims about completed client projects.</p></div><button class="button secondary" id="importSamplesButton" type="button">Add sample concepts</button></div>
+        </section>
+        <section class="dash-panel" id="projectsPanel" hidden>
+          <div class="panel-heading"><div><div class="eyebrow">PORTFOLIO MANAGEMENT</div><h2>Projects</h2><p>Create, edit, publish or remove items shown in the homepage portfolio.</p></div><button class="button primary" type="button" data-open-new-project>＋ New project</button></div>
+          <form class="editor-card" id="projectForm" hidden>
+            <div class="editor-head"><div><div class="eyebrow" id="projectFormEyebrow">NEW PORTFOLIO ITEM</div><h3 id="projectFormTitle">Add a project</h3></div><button class="icon-button" id="closeProjectForm" type="button" aria-label="Close project form">✕</button></div>
+            <input id="projectId" type="hidden" />
+            <div class="form-grid">
+              <label>Project title *<input id="projectTitle" required maxlength="120" placeholder="e.g. Home Café Digital Menu" /></label>
+              <label>Category *<input id="projectCategory" required maxlength="80" value="Website" placeholder="Website / Digital Menu / NFC" /></label>
+              <label class="span-two">Description *<textarea id="projectDescription" required maxlength="700" rows="3" placeholder="What does this concept or project demonstrate?"></textarea></label>
+              <label>Live demo URL (optional)<input id="projectDemoUrl" type="url" placeholder="https://example.com/" /></label>
+              <label>Image URL (optional)<input id="projectImageUrl" type="url" placeholder="https://… or upload an image below" /></label>
+              <label class="span-two">Upload preview image (PNG, JPG or WebP; up to 5 MB)<input id="projectImageFile" type="file" accept="image/png,image/jpeg,image/webp" /><small class="field-help">Uploading replaces the image URL above. Storage access is restricted to your admin account; public preview images use the public bucket URL.</small></label>
+              <label>Display order<input id="projectOrder" type="number" min="0" max="9999" step="1" value="0" /></label>
+              <label class="publish-switch"><span>Publish this project</span><input id="projectPublished" type="checkbox" checked /><small class="field-help">Turn off to keep the item as a draft.</small></label>
+            </div>
+            <div class="editor-actions"><button class="button secondary" id="cancelProjectButton" type="button">Cancel</button><button class="button primary" id="saveProjectButton" type="submit">Save project</button></div>
+            <p class="form-message" id="projectMessage" role="status" aria-live="polite"></p>
+          </form>
+          <div class="project-list" id="projectList"><div class="loading-row">Loading projects…</div></div>
+        </section>
+        <section class="dash-panel" id="brandingPanel" hidden>
+          <div class="panel-heading"><div><div class="eyebrow">SITE IDENTITY</div><h2>Website branding</h2><p>Upload a replacement for the logo in the public site header, footer and favicon.</p></div></div>
+          <div class="branding-card">
+            <div class="logo-preview-wrap"><span class="eyebrow">CURRENT LOGO PREVIEW</span><div class="logo-preview"><img id="logoPreview" src="ved-digital-services-logo.png" alt="Current website logo preview" /></div></div>
+            <form id="brandingForm" class="branding-form">
+              <label>Choose a logo image (PNG, JPG or WebP; up to 5 MB)<input id="brandLogoFile" type="file" accept="image/png,image/jpeg,image/webp" required /></label>
+              <p class="field-help">The new logo is uploaded to the portfolio-assets bucket and its public URL is stored in <code>site_settings</code>. The original local logo remains available as a fallback.</p>
+              <div class="editor-actions"><button class="button secondary" id="resetLogoButton" type="button">Use original logo</button><button class="button primary" id="saveLogoButton" type="submit">Upload & apply logo</button></div>
+              <p class="form-message" id="brandingMessage" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+    <section class="blocked-card" id="blockedCard" hidden><h2>Dashboard access is paused</h2><p id="blockedMessage">We couldn't verify admin access. No management actions are available until your session and role are verified.</p><a class="button secondary" href="admin-login.html">Return to login</a></section>
+    <footer class="dash-footer"><span>Ved Digital Services</span><span>Public website · Private admin workspace</span></footer>
+  </main>
+  <script defer src="config.js"></script>
+  <script defer src="supabase-config.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="supabase-client.js"></script>
+  <script defer src="admin.js"></script>
+</body>
+</html>

@@ -1,10 +1,6 @@
-VED DIGITAL SERVICES — LOGO PATH FIX
-
-This patch fixes the broken header logo by placing the logo file at the repository root.
-
-Upload these three files to the ROOT of your existing GitHub repository:
-- index.html (replace existing)
-- styles.css (replace existing)
-- ved-digital-services-logo.png (new file)
-
-Then click Commit changes. Do not upload the ZIP itself, and do not delete other files.
+LOGO NOTE — VED DIGITAL SERVICES
+================================
+The original logo is stored at the repository root as ved-digital-services-logo.png and remains the fallback.
+After setting the Supabase Publishable key in supabase-config.js, an admin can upload a replacement logo from
+admin-login.html -> dashboard.html -> Website branding. The new public logo URL is stored in
+public.site_settings under setting_key = brand_logo_url. Never use a service_role or secret key in browser code.

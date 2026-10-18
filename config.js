@@ -194,3 +194,6 @@ const SITE_CONFIG = {
     { q: "Can you customize a package?", a: "Yes. We confirm the scope, included revisions, timeline and third-party costs before starting a custom project." }
   ]
 };
+
+// Expose the same configuration for the optional owner dashboard sample importer.
+window.SITE_CONFIG = SITE_CONFIG;
