@@ -3,5 +3,5 @@
    NEVER paste a service_role key or any Supabase secret key into this file. */
 window.VED_SUPABASE_CONFIG = {
   url: 'https://xuveyvfxrdoedcczyesl.supabase.co',
-  publishableKey: 'PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE'
+  publishableKey: 'sb_publishable_qMu4Q_31rhC5J6Z1FNPVfg_i0ptaNrc'
 };
